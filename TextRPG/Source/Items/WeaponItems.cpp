@@ -103,16 +103,16 @@ ItemEffect WSharperStick::OnUnequip()
 	return WeaponItem::Use();
 }
 
-WDoubleSidedIronSword::WDoubleSidedIronSword()
+WSwordOfSuperiority::WSwordOfSuperiority()
 {
-	m_Name = Util::GetRandomName(6, true, "'s Doubled Sided Iron Sword");
+	m_Name = Util::GetRandomName(6, true, "'s Sword of Superiority");
 	m_Damage = 17;
 }
 
-ItemEffect WDoubleSidedIronSword::OnUpdate()
+ItemEffect WSwordOfSuperiority::OnUpdate()
 {
 	ItemAction actions[] = { ItemAction::StrengthIncrease };
-	int effects[] = { 5 };
+	int effects[] = { 20 };
 
 	printf("You feel courage rushing through your veins\nStrength increased by 5");
 

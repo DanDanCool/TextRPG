@@ -86,10 +86,10 @@ public:
 	virtual ItemEffect OnUnequip() override;
 };
 
-class WDoubleSidedIronSword : public WeaponItem
+class WSwordOfSuperiority : public WeaponItem
 {
 public:
-	WDoubleSidedIronSword();
+	WSwordOfSuperiority();
 
 	virtual ItemEffect OnUpdate() override;
 };

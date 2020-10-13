@@ -6,6 +6,7 @@ struct Shop
 {
 	int* Costs;
 	Item** Items;
+	const char* ScoreItemName;
 };
 
 Shop CreateShop1();
