@@ -36,19 +36,15 @@ void Player::UseItem(Item* item)
 		switch (*(effect.Actions + i))
 		{
 		case ItemAction::HealthIncrease:
-			printf("You healed %i health!", *(effect.Effects + i));
 			m_Health += *(effect.Effects + i);
 			break;
 		case ItemAction::StrengthIncrease:
-			printf("You gained %i strength!", *(effect.Effects + i));
 			m_Strength += *(effect.Effects + i);
 			break;
 		case ItemAction::DefenseIncrease:
-			printf("You gained %i defense!", *(effect.Effects + i));
 			m_Defense += *(effect.Effects + i);
 			break;
 		case ItemAction::Damage:
-			printf("You stabbed yourself for %i damage!", *(effect.Effects + i));
 			m_Health -= *(effect.Effects + i);
 			break;
 		}

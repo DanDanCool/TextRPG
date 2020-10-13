@@ -1,69 +1,117 @@
 #pragma once
 
 #include "Item.h"
+#include "../Util.h"
+#include <stdio.h>
 
 class WWoodenSword : public WeaponItem
 {
 public:
-	WWoodenSword()
-		: m_Damage(3) {}
+	WWoodenSword();
 };
 
 class WThrowingRocks : public WeaponItem
 {
 public:
-	WThrowingRocks()
-		: m_Damage(2) {}
+	WThrowingRocks();
 };
 
 class WAxe : public WeaponItem
 {
 public:
-	WAxe()
-		: m_Damage(4) {}
+	WAxe();
 };
 
 class WStick : public WeaponItem
 {
 public:
-	WStick()
-		: m_Damage(5) {}
+	WStick();
+
+	virtual ItemEffect OnUnequip() override;
 };
 
 class WStoneSword : public WeaponItem
 {
 public:
-	WStoneSword()
-		: m_Damage(7) {}
+	WStoneSword();
 };
 
 class WBow : public WeaponItem
 {
 public:
-	WBow()
-		: m_Damage(6) {}
+	WBow();
 };
 
 class WBerserkerAxe : public WeaponItem
 {
 public:
-	WBerserkerAxe()
-		: m_Damage(10) {}
+	WBerserkerAxe();
 };
 
 class WSharpStick : public WeaponItem
 {
 public:
-	WSharpStick()
-		: m_Damage(11) {}
+	WSharpStick();
+
+	virtual ItemEffect OnUnequip() override;
 };
 
 class WIronSword : public WeaponItem
 {
 public:
-	WIronSword()
-		: m_Damage(15) {}
+	WIronSword();
 };
 
-damageitems3 = ["Iron Sword", "Gun", "Madman's Massacring Machete", "Sharper Stick"]
-damageitems4 = ["Double Sided Iron Sword", "Laser Blaster", "Sharpest Stick", "Mysterious Yellow Amulet"]
+class WGun : public WeaponItem
+{
+public:
+	WGun();
+
+	virtual ItemEffect OnEquip() override;
+};
+
+
+class WMadmanMachete : public WeaponItem
+{
+public:
+	WMadmanMachete();
+};
+
+
+class WSharperStick : public WeaponItem
+{
+public:
+	WSharperStick();
+
+	virtual ItemEffect OnUnequip() override;
+};
+
+class WDoubleSidedIronSword : public WeaponItem
+{
+public:
+	WDoubleSidedIronSword();
+
+	virtual ItemEffect OnUpdate() override;
+};
+
+class WLaserBlaster : public WeaponItem
+{
+	WLaserBlaster();
+
+	virtual ItemEffect OnUpdate() override;
+};
+
+class WSharpestStick : public WeaponItem
+{
+	WSharpestStick();
+
+	virtual ItemEffect OnUnequip() override;
+};
+
+class WMysteriousYellowAmulet : public WeaponItem
+{
+	WMysteriousYellowAmulet();
+
+	virtual ItemEffect OnUnequip() override;
+	virtual ItemEffect OnUpdate() override;
+};

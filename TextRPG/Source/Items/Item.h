@@ -26,8 +26,12 @@ public:
 	virtual ItemEffect Use();
 	virtual bool IsEquippable() { return false; }
 
+	const char* GetName() const { return m_Name; }
+
 protected:
 	Item() = default;
+	
+	const char* m_Name;
 };
 
 class HealthItem : public Item

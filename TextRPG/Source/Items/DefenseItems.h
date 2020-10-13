@@ -5,34 +5,25 @@
 class AWoodenShield : public ArmorItem
 {
 public:
-	AWoodenShield()
-		: m_Defense(2) {}
+	AWoodenShield();
 };
 
 class AIronArmor : public ArmorItem
 {
 public:
-	AIronArmor()
-		: m_Defense(5) {}
+	AIronArmor();
 };
 
 class ADamascusSteelArmor : public ArmorItem
 {
 public:
-	ADamascusSteelArmor()
-		: m_Defense(10) {}
+	ADamascusSteelArmor();
 };
 
 class AMysteriousRedAmulet : public ArmorItem
 {
 public:
-	AMysteriousRedAmulet()
-		: m_Defense(20) {}
+	AMysteriousRedAmulet();
 
-	virtual ItemEffect OnUpdate() override
-	{
-		ItemAction actions = { ItemAction::HealthIncrease };
-		int effects = { 2 };
-		return ItemEffect{ 1, actions, effects };
-	}
+	virtual ItemEffect OnUpdate() override;
 };
