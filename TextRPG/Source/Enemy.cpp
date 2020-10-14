@@ -1,8 +1,10 @@
 #include "Enemy.h"
 
+#include "Util.h"
+
 Enemy CreateNormalEnemy()
 {
-	return Enemy{};
+	Enemy enemy;
 }
 
 Enemy CreateShinyEnemy()

@@ -9,6 +9,7 @@ struct Shop
 	const char* ScoreItemName;
 };
 
+Shop CreateShop(int step);
 Shop CreateShop1();
 Shop CreateShop2();
 Shop CreateShop3();

@@ -4,11 +4,11 @@
 
 struct Enemy
 {
-	std::string Name;
+	const char* Name;
 	int Health;
 	int Strength;
 	int Money;
 };
 
-Enemy CreateNormalEnemy();
-Enemy CreateShinyEnemy();
+Enemy CreateNormalEnemy(int step);
+Enemy CreateShinyEnemy(int step);

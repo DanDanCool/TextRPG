@@ -1,5 +1,8 @@
 #include "Game.h"
 
+#include "Shop.h"
+#include "Random.h"
+
 #include <stdio.h>
 #include <thread>
 
@@ -133,6 +136,9 @@ void Game::OnUpdate()
 
 		if (moved)
 		{
+			m_Score++;
+			m_Step++;
+
 			OnPlayerDebt();
 			
 			if (m_Player.IsAlive())
@@ -239,12 +245,125 @@ bool Game::OnMovement()
 
 void Game::OnPlayerDebt()
 {
+	if (m_Debt == 75)
+	{
+		printf("--------------------------\n");
+		printf("Daniel the Evil Banker: I have noticed you have missed your payments, please make your payments soon\n");
+		printf("--------------------------\n");
+		PrintPlayerVitals();
+	}
+	else if (m_Debt == 80)
+	{
+		printf("--------------------------\n");
+		printf("Daniel the Evil Banker: I have noticed your debts are growing dangerously large. Please pay them soon.\n");
+		printf("--------------------------\n");
+		PrintPlayerVitals();
+	}
+	else if (m_Debt == 85)
+	{
+		printf("--------------------------\n");
+		printf("Daniel the Evil Banker: I will be cancelling your credit card soon. Pay up!\n");
+		printf("--------------------------\n");
+		PrintPlayerVitals();
+	}
+	else if (m_Debt == 90)
+	{
+		printf("--------------------------\n");
+		printf("Daniel the Evil Banker: I'm taking your house, a nomad like you isn't using it anyway.\n");
+		printf("--------------------------\n");
+		PrintPlayerVitals();
+	}
+	else if (m_Debt == 95)
+	{
+		printf("--------------------------\n");
+		printf("Daniel the Evil Banker: I'm extracting the iron from your blood to sell it on the market.\n");
+		printf("--------------------------\n");
+		PrintPlayerVitals();
+	}
+	else if (m_Debt == 100)
+	{
+		printf("--------------------------\n");
+		printf("Daniel the Evil Banker: I'm using your life insurance to pay for your debt.\n");
+		printf("You take %d damage.\n", 666);
+		printf("--------------------------\n");
+		
+		StatusAction action = StatusAction::Health;
+		int effect = -666;
+
+		StatusEffect statusEffect;
+		statusEffect.Size = 1;
+		statusEffect.Actions = &action;
+		statusEffect.Effects = &effect;
+
+		m_Player.HandleStatusEffect(statusEffect);
+	}
 }
 
 void Game::OnShopEncounter()
 {
+	Shop shop = CreateShop(m_Step);
+
+	const char* prefix = "";
+
+	if (m_Step < 160)
+		prefix = "a ";
+
+	printf("\n");
+	printf("============================\n");
+	printf("      T H E   S H O P       \n");
+	printf("============================\n");
+	printf("\n");
+	printf("----------------------------\n");
+
+	printf("You come across a shop with three items.\n\n");
+	
+	std::this_thread::sleep_for(std::chrono::milliseconds(500));
+	printf("The first item is %s%s, and costs %d money\n", prefix, *(shop.Items)->GetName(), *(shop.Costs));
+	std::this_thread::sleep_for(std::chrono::milliseconds(500));
+	printf("The second item is %s%s, and costs %d money\n", prefix, *(shop.Items + 1)->GetName(), *(shop.Costs + 1));
+	std::this_thread::sleep_for(std::chrono::milliseconds(500));
+	printf("The third item is %s%s, and costs %d money\n", prefix, *(shop.Items + 2)->GetName(), *(shop.Costs + 2));
+	std::this_thread::sleep_for(std::chrono::milliseconds(500));
+	printf("The fourth item is the %s, and costs %d money\n", shop.ScoreItemName, *(shop.Costs + 3));
+
+	while (true)
+	{
+		printf("\nPress '1', '2', or '3' to select an item. Press '0' to purchase none of them.\n");
+
+		char selection;
+		scanf_s("%c", &selection);
+
+		switch (selection)
+		{
+		case '1':
+			printf("You purchased %s%s for %d money\n", prefix, *(shop.Items)->GetName(), *(shop.Costs));
+			m_Player.AddItem(*(shop.Items));
+			break;
+		case '2':
+			printf("You purchased %s%s for %d money\n", prefix, *(shop.Items + 1)->GetName(), *(shop.Costs + 1));
+			m_Player.AddItem(shop.Items + 1);
+			break;
+		case '3':
+			printf("You purchased %s%s for %d money\n", prefix, *(shop.Items + 2)->GetName(), *(shop.Costs + 2));
+			m_Player.AddItem(shop.Items + 2);
+			break;
+		case '4':
+			printf("You purchased the %s for %d money\n", shop.ScoreItemName, *(shop.Costs + 3));
+			printf("You gained some score!\n");
+			m_Score += m_Step / 2 + Random::UInt32(0, 20);
+			break;
+		case '0':
+			break;
+		default:
+			printf("Poor input.\n");
+			continue;
+		}
+
+		break;
+	}
 }
 
 void Game::OnRandomEncounter()
 {
+
 }

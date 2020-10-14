@@ -132,6 +132,18 @@ static Item* CreateItem(uint32_t item)
 	}
 }
 
+Shop CreateShop(int step)
+{
+	if (step >= 40)
+		return CreateShop1();
+	if (step >= 80)
+		return CreateShop2();
+	if (step >= 120)
+		return CreateShop3();
+	if (step >= 160)
+		return CreateShop4();
+}
+
 Shop CreateShop1()
 {
 	Shop shop;
