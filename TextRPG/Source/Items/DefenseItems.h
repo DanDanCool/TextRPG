@@ -25,5 +25,5 @@ class AMysteriousRedAmulet : public ArmorItem
 public:
 	AMysteriousRedAmulet();
 
-	virtual ItemEffect OnUpdate() override;
+	virtual StatusEffect OnUpdate() override;
 };

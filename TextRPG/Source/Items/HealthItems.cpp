@@ -15,14 +15,14 @@ HFish::HFish()
 	m_HealAmount = 3;
 }
 
-ItemEffect HFish::Use()
+StatusEffect HFish::Use()
 {
-	ItemAction actions[] = { ItemAction::HealthIncrease, ItemAction::StrengthIncrease };
+	StatusAction actions[] = { StatusAction::HealthIncrease, StatusAction::StrengthIncrease };
 	int effects[] = { m_HealAmount, 1 };
 
-	printf("You ate a fish!\nYou gain 3 health and 1 strength!");
+	printf("You ate a fish!\nYou gain 3 health and 1 strength!\n");
 
-	return ItemEffect{ 2, actions, effects };
+	return StatusEffect{ 2, actions, effects };
 }
 
 HHamburger::HHamburger()
@@ -51,12 +51,12 @@ HSuperFish::HSuperFish()
 
 HSuperFish::Use()
 {
-	ItemAction actions[] = { ItemAction::HealthIncrease, ItemAction::StrengthIncrease };
+	StatusAction actions[] = { StatusAction::HealthIncrease, StatusAction::StrengthIncrease };
 	int effects[] = { m_HealAmount, 4 };
 
-	printf("You eat a super fish!\nYou gain 7 health and 4 strength");
+	printf("You eat a super fish!\nYou gain 7 health and 4 strength\n");
 
-	return ItemEffect{ 2, actions, effects };
+	return StatusEffect{ 2, actions, effects };
 }
 
 HGreaterHealingPotion::HGreaterHealingPotion()
@@ -78,14 +78,14 @@ HSupererFish::HSupererFish()
 
 }
 
-ItemEffect HSupererFish::Use()
+StatusEffect HSupererFish::Use()
 {
-	ItemAction actions = { ItemAction::HealthIncrease, ItemAction::StrengthIncrease, ItemAction::DefenseIncrease };
+	StatusAction actions = { StatusAction::HealthIncrease, StatusAction::StrengthIncrease, StatusAction::DefenseIncrease };
 	int effects = { m_HealAmount, 8, 2 };
 
-	printf("You ate a superer fish!\nHealth increased by 12! Strength increased by 8! Defense increased by 2!");
+	printf("You ate a superer fish!\nHealth increased by 12! Strength increased by 8! Defense increased by 2!\n");
 
-	return ItemEffect{ 3, actions, effects };
+	return StatusEffect{ 3, actions, effects };
 }
 
 HSupremeHealingPotion::HSupremeHealingPotion()
@@ -100,14 +100,14 @@ HSupremeElixirOfLongevity::HSupremeElixirOfLongevity()
 	m_HealAmount = 22;
 }
 
-ItemEffect HSupremeElixirOfLongevity::Use()
+StatusEffect HSupremeElixirOfLongevity::Use()
 {
-	ItemAction actions[] = { ItemAction::HealthIncrease, ItemAction::DefenseIncrease };
+	StatusAction actions[] = { StatusAction::HealthIncrease, StatusAction::DefenseIncrease };
 	int effects = { m_HealAmount, 10 };
 
-	printf("You drink the Supreme Elixir of Longevity...\nHealth increased by 22! Defense Increased by 10!");
+	printf("You drink the Supreme Elixir of Longevity...\nHealth increased by 22! Defense Increased by 10!\n");
 
-	return ItemEffect{ 2, actions, effects };
+	return StatusEffect{ 2, actions, effects };
 }
 
 HSupremeFish::HSupremeFish()
@@ -116,17 +116,17 @@ HSupremeFish::HSupremeFish()
 	m_HealAmount = 14;
 }
 
-ItemEffect HSupremeFish::Use()
+StatusEffect HSupremeFish::Use()
 {
-	ItemAction actions[] = {
-			ItemAction::HealthIncrease,
-			ItemAction::StrengthIncrease,
-			ItemAction::DefenseIncrease
+	StatusAction actions[] = {
+			StatusAction::HealthIncrease,
+			StatusAction::StrengthIncrease,
+			StatusAction::DefenseIncrease
 	};
 
 	int effects = { m_HealAmount, 20, 20 };
 
-	printf("You eat the supreme fish...\nHealth increased by 14! Strength increased by 20! Defense increased by 20!");
+	printf("You eat the supreme fish...\nHealth increased by 14! Strength increased by 20! Defense increased by 20!\n");
 
-	return ItemEffect{ 3, actions, effects };
+	return StatusEffect{ 3, actions, effects };
 }

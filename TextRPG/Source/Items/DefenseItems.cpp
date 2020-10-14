@@ -29,12 +29,12 @@ AMysteriousRedAmulet::AMysteriousRedAmulet()
 	m_Defense = 20;
 }
 
-ItemEffect AMysteriousRedAmulet::OnUpdate()
+StatusEffect AMysteriousRedAmulet::OnUpdate()
 {
-	ItemAction actions = { ItemAction::HealthIncrease };
+	StatusAction actions = { StatusAction::HealthIncrease };
 	int effects = { 2 };
 
-	printf("Your red amulet shines vibrantly...\nYou gained 2 health!");
+	printf("Your red amulet shines vibrantly...\nYou gained 2 health!\n");
 
-	return ItemEffect{ 1, actions, effects };
+	return StatusEffect{ 1, actions, effects };
 }

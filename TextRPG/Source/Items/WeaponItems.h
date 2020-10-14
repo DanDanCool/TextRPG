@@ -27,7 +27,7 @@ class WStick : public WeaponItem
 public:
 	WStick();
 
-	virtual ItemEffect OnUnequip() override;
+	virtual StatusEffect OnUnequip() override;
 };
 
 class WStoneSword : public WeaponItem
@@ -53,7 +53,7 @@ class WSharpStick : public WeaponItem
 public:
 	WSharpStick();
 
-	virtual ItemEffect OnUnequip() override;
+	virtual StatusEffect OnUnequip() override;
 };
 
 class WIronSword : public WeaponItem
@@ -67,7 +67,7 @@ class WGun : public WeaponItem
 public:
 	WGun();
 
-	virtual ItemEffect OnEquip() override;
+	virtual StatusEffect OnEquip() override;
 };
 
 
@@ -83,7 +83,7 @@ class WSharperStick : public WeaponItem
 public:
 	WSharperStick();
 
-	virtual ItemEffect OnUnequip() override;
+	virtual StatusEffect OnUnequip() override;
 };
 
 class WSwordOfSuperiority : public WeaponItem
@@ -91,27 +91,27 @@ class WSwordOfSuperiority : public WeaponItem
 public:
 	WSwordOfSuperiority();
 
-	virtual ItemEffect OnUpdate() override;
+	virtual StatusEffect OnUpdate() override;
 };
 
 class WLaserBlaster : public WeaponItem
 {
 	WLaserBlaster();
 
-	virtual ItemEffect OnUpdate() override;
+	virtual StatusEffect OnUpdate() override;
 };
 
 class WSharpestStick : public WeaponItem
 {
 	WSharpestStick();
 
-	virtual ItemEffect OnUnequip() override;
+	virtual StatusEffect OnUnequip() override;
 };
 
 class WMysteriousYellowAmulet : public WeaponItem
 {
 	WMysteriousYellowAmulet();
 
-	virtual ItemEffect OnUnequip() override;
-	virtual ItemEffect OnUpdate() override;
+	virtual StatusEffect OnUnequip() override;
+	virtual StatusEffect OnUpdate() override;
 };

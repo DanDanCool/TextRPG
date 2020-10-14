@@ -13,7 +13,7 @@ class HFish : public HealthItem
 public:
 	HFish();
 
-	virtual ItemEffect Use() override;
+	virtual StatusEffect Use() override;
 };
 
 class HHamburger : public HealthItem
@@ -39,7 +39,7 @@ class HSuperFish : public HealthItem
 public:
 	HSuperFish();
 
-	virtual ItemEffect Use() override;
+	virtual StatusEffect Use() override;
 };
 
 class HGreaterHealingPotion : public HealthItem
@@ -59,7 +59,7 @@ class HSupererFish : public HealthItem
 public:
 	HSupererFish();
 
-	virtual ItemEffect Use() override;
+	virtual StatusEffect Use() override;
 };
 
 class HSupremeHealingPotion : public HealthItem
@@ -73,7 +73,7 @@ class HSupremeElixirOfLongevity : public HealthItem
 public:
 	HSupremeElixirOfLongevity();
 
-	virtual ItemEffect Use() override;
+	virtual StatusEffect Use() override;
 };
 
 class HSupremeFish : public HealthItem
@@ -81,5 +81,5 @@ class HSupremeFish : public HealthItem
 public:
 	HSupremeFish();
 
-	virtual ItemEffect Use() override;
+	virtual StatusEffect Use() override;
 };

@@ -169,6 +169,7 @@
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\Random.h" />
     <ClInclude Include="Source\Shop.h" />
+    <ClInclude Include="Source\StatusEffect.h" />
     <ClInclude Include="Source\Util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

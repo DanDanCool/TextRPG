@@ -1,29 +1,15 @@
 #pragma once
 
+#include "../StatusEffect.h"
+
 class Player;
-
-enum class ItemAction
-{
-	None = 0,
-	HealthIncrease,
-	StrengthIncrease,
-	DefenseIncrease,
-	Damage
-};
-
-struct ItemEffect
-{
-	int NumEffects;
-	ItemAction* Actions;
-	int* Effects;
-};
 
 class Item
 {
 public:
 	virtual ~Item() = default;
 
-	virtual ItemEffect Use();
+	virtual StatusEffect Use();
 	virtual bool IsEquippable() { return false; }
 
 	const char* GetName() const { return m_Name; }
@@ -37,7 +23,7 @@ protected:
 class HealthItem : public Item
 {
 public:
-	virtual ItemEffect Use() override;
+	virtual StatusEffect Use() override;
 	bool IsEquippable() final { return false; }
 
 protected:
@@ -47,10 +33,10 @@ protected:
 class EquippableItem : public Item
 {
 public:
-	virtual ItemEffect OnEquip() { return Item::Use(); }
-	virtual ItemEffect OnUnequip() { return Item::Use(); }
+	virtual StatusEffect OnEquip() { return Item::Use(); }
+	virtual StatusEffect OnUnequip() { return Item::Use(); }
 
-	virtual ItemEffect OnUpdate() { return Item::Use(); }
+	virtual StatusEffect OnUpdate() { return Item::Use(); }
 
 	bool IsEquippable() final { return true; }
 
@@ -64,7 +50,7 @@ protected:
 class WeaponItem : public EquippableItem
 {
 public:
-	virtual ItemEffect Use() override;
+	virtual StatusEffect Use() override;
 	bool IsWeapon() final { return true; }
 	int GetDamage() const { return m_Damage; }
 

@@ -6,32 +6,32 @@
 #include <stdio.h>
 
 
-ItemEffect Item::Use()
+StatusEffect Item::Use()
 {
-	printf("Nothing happened");
+	printf("Nothing happened\n");
 
-	ItemAction actions[] = { ItemAction::None };
+	StatusAction actions[] = { StatusAction::None };
 	int effects[] = { 0 };
 	
-	return ItemEffect{ 1, actions, effects };
+	return StatusEffect{ 1, actions, effects };
 }
 
-ItemEffect HealthItem::Use()
+StatusEffect HealthItem::Use()
 {
-	ItemAction actions[] = { ItemAction::HealthIncrease };
+	StatusAction actions[] = { StatusAction::HealthIncrease };
 	int effects[] = { Util::Clamp(0, m_HealAmount + 4 * (Random::Float() - 0.5f)) };
 
-	printf("You healed %i health!", effects[0]);
+	printf("You healed %d health!\n", effects[0]);
 
-	return ItemEffect{ 1, actions, effects };
+	return StatusEffect{ 1, actions, effects };
 }
 
-ItemEffect WeaponItem::Use()
+StatusEffect WeaponItem::Use()
 {
-	ItemAction actions[] = { ItemAction::Damage };
+	StatusAction actions[] = { StatusAction::Damage };
 	int effects[] = { Util::Clamp(0, m_Damage + 10 * (Random::Float() - 0.f)) };
 
-	printf("You took %i damage!", effects[0]);
+	printf("You took %d damage!\n", effects[0]);
 
-	return ItemEffect{ 1, actions, effects };
+	return StatusEffect{ 1, actions, effects };
 }

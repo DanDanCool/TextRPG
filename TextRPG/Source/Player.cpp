@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Util.h"
 
 Player::Player()
 {
@@ -27,44 +28,94 @@ void Player::PopItem(Item* item)
 	}
 }
 
+bool Player::HasItem(Item* item) const
+{
+	auto it = std::find(m_Inventory.begin(), m_Inventory.end(), item);
+	if (it != m_Inventory.end())
+		return true;
+
+	return false;
+}
+
 void Player::UseItem(Item* item)
 {
-	ItemEffect effect = item->Use();
-
-	for (int i = 0; i < effect.NumEffects; i++)
+	if (HasItem(item))
 	{
-		switch (*(effect.Actions + i))
+		StatusEffect effect = item->Use();
+		HandleStatusEffect(effect);
+
+		if (item != m_Weapon || item != m_Armor)
 		{
-		case ItemAction::HealthIncrease:
-			m_Health += *(effect.Effects + i);
-			break;
-		case ItemAction::StrengthIncrease:
-			m_Strength += *(effect.Effects + i);
-			break;
-		case ItemAction::DefenseIncrease:
-			m_Defense += *(effect.Effects + i);
-			break;
-		case ItemAction::Damage:
-			m_Health -= *(effect.Effects + i);
-			break;
+			PopItem(item);
+			delete item;
 		}
 	}
 }
 
 void Player::Equip(WeaponItem* item)
 {
+	StatusEffect effect;
 	if (m_Weapon)
-		m_Weapon->OnUnequip();
+	{
+		effect = m_Weapon->OnUnequip();
+		HandleStatusEffect(effect);
+	}
 
 	m_Weapon = item;
-	item->OnEquip(this);
+	effect = item->OnEquip(this);
+	HandleStatusEffect(effect);
 }
 
 void Player::Equip(ArmorItem* item)
 {
+	StatusEffect effect;
+
 	if (m_Armor)
-		m_Armor->OnUnequip();
+	{
+		effect = m_Armor->OnUnequip();
+		HandleStatusEffect(effect);
+	}
 
 	m_Armor = item;
-	item->OnEquip(this);
+	effect = item->OnEquip(this);
+	HandleStatusEffect(effect);
+}
+
+bool Player::IsWeaponEquipped() const
+{
+	if (m_Weapon)
+		return true;
+	
+	return false;
+}
+
+bool Player::IsArmorEquipped() const
+{
+	if (m_Armor)
+		return true;
+	
+	return false;
+}
+
+void Player::HandleStatusEffect(const StatusEffect& effect)
+{
+	for (int i = 0; i < effect.Size; i++)
+	{
+		switch (*(effect.Actions + i))
+		{
+		case StatusAction::Health:
+			m_Health += *(effect.Effects + i);
+			if (m_Health < 0)
+				m_bAlive = true;
+			break;
+		case StatusAction::Strength:
+			m_Strength += *(effect.Effects + i);
+			m_Strength = Util::Clamp(0, m_Strength);
+			break;
+		case StatusAction::Defense:
+			m_Defense += *(effect.Effects + i);
+			m_Defense = Util::Clamp(0, m_Defense);
+			break;
+		}
+	}
 }

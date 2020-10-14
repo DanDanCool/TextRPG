@@ -28,9 +28,9 @@ WStick::WStick()
 
 }
 
-ItemEffect WStick::OnUnequip()
+StatusEffect WStick::OnUnequip()
 {
-	printf("You pricked yourself! You took some damage...");
+	printf("You pricked yourself! You took some damage...\n");
 	return WeaponItem::Use();
 }
 
@@ -59,9 +59,9 @@ WSharpStick::WSharpStick()
 
 }
 
-ItemEffect WSharpStick::OnUnequip()
+StatusEffect WSharpStick::OnUnequip()
 {
-	printf("You pricked yourself! You took some damage...");
+	printf("You pricked yourself! You took some damage...\n");
 	return WeaponItem::Use();
 }
 
@@ -77,12 +77,12 @@ WGun::WGun()
 	m_Damage = 17
 }
 
-ItemEffect WGun::OnEquip()
+StatusEffect WGun::OnEquip()
 {
-	printf("You equpped a gun and lost 5 defense!");
-	ItemAction actions[] = { ItemAction::DefenseIncrease };
+	printf("You equpped a gun and lost 5 defense!\n");
+	StatusAction actions[] = { StatusAction::DefenseIncrease };
 	int effects[] = { -5 };
-	return ItemEffect{ 1, actions, effects };
+	return StatusEffect{ 1, actions, effects };
 }
 
 WMadmanMachete::WMadmanMachete()
@@ -97,9 +97,9 @@ WSharperStick::WSharperStick()
 	m_Damage = 17;
 }
 
-ItemEffect WSharperStick::OnUnequip()
+StatusEffect WSharperStick::OnUnequip()
 {
-	printf("You pricked yourself! You took some damage...");
+	printf("You pricked yourself! You took some damage...\n");
 	return WeaponItem::Use();
 }
 
@@ -109,14 +109,14 @@ WSwordOfSuperiority::WSwordOfSuperiority()
 	m_Damage = 17;
 }
 
-ItemEffect WSwordOfSuperiority::OnUpdate()
+StatusEffect WSwordOfSuperiority::OnUpdate()
 {
-	ItemAction actions[] = { ItemAction::StrengthIncrease };
+	StatusAction actions[] = { StatusAction::StrengthIncrease };
 	int effects[] = { 20 };
 
-	printf("You feel courage rushing through your veins\nStrength increased by 5");
+	printf("You feel courage rushing through your veins...\nStrength increased by 20!\n");
 
-	return ItemEffect{ 1, actions, effects };
+	return StatusEffect{ 1, actions, effects };
 }
 
 WLaserBlaster::WLaserBlaster()
@@ -125,15 +125,15 @@ WLaserBlaster::WLaserBlaster()
 	m_Damage = 50;
 }
 
-ItemEffect WLaserBlaster::OnUpdate()
+StatusEffect WLaserBlaster::OnUpdate()
 {
-	ItemAction actions[] = { ItemAction::HealthIncrease, ItemAction::DefenseIncrease };
+	StatusAction actions[] = { StatusAction::HealthIncrease, StatusAction::DefenseIncrease };
 	int effects[] = { -5, -5 };
 
-	printf("The radiation emitting from the Laser Blaster drains your health");
-	printf("You took 5 damage! Defense decreased by 5");
+	printf("The radiation emitting from the Laser Blaster drains your health...\n");
+	printf("You took 5 damage! Defense decreased by 5!\n");
 
-	return ItemEffect{ 2, actions, effects };
+	return StatusEffect{ 2, actions, effects };
 }
 
 WSharpestStick::WSharpestStick()
@@ -142,9 +142,9 @@ WSharpestStick::WSharpestStick()
 	m_Damage = 30;
 }
 
-ItemEffect WSharpestStick::OnUnequip()
+StatusEffect WSharpestStick::OnUnequip()
 {
-	printf("You pricked yourself! You took some damage...");
+	printf("You pricked yourself! You took some damage...\n");
 	return WeaponItem::Use();
 }
 
@@ -154,29 +154,29 @@ WMysteriousYellowAmulet::WMysteriousYellowAmulet()
 	m_Damage = 25;
 }
 
-ItemEffect WMysteriousYellowAmulet::OnUnequip()
+StatusEffect WMysteriousYellowAmulet::OnUnequip()
 {
-	ItemAction actions = { ItemAction::HealthIncrease };
+	StatusAction actions = { StatusAction::HealthIncrease };
 	int effects = { -100 };
 
-	printf("You scream in agony as you try to wrench the amulet off...");
-	printf("You lost 100 health");
+	printf("You scream in agony as you try to wrench the amulet off...\n");
+	printf("You lost 100 health!\n");
 
-	return ItemEffect{ 1, actions, effects };
+	return StatusEffect{ 1, actions, effects };
 }
 
-ItemEffect WMysteriousYellowAmulet::OnUpdate()
+StatusEffect WMysteriousYellowAmulet::OnUpdate()
 {
-	ItemAction actions = {
-			ItemAction::HealthIncrease,
-			ItemAction::StrengthIncrease,
-			ItemAction::DefenseIncrease
+	StatusAction actions = {
+			StatusAction::HealthIncrease,
+			StatusAction::StrengthIncrease,
+			StatusAction::DefenseIncrease
 	};
 
 	int effects = { 5, 1, 2 };
 
-	printf("Your yellow amulet glows mysteriously... You gained some stats!");
-	printf("Health increased by 5! Strength increased by 1! Defense increased by 2!");
+	printf("Your yellow amulet glows mysteriously... You gained some stats!\n");
+	printf("Health increased by 5! Strength increased by 1! Defense increased by 2!\n");
 
-	return ItemEffect{ 3, actions, effects };
+	return StatusEffect{ 3, actions, effects };
 }
