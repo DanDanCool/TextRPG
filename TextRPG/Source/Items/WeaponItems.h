@@ -96,6 +96,7 @@ public:
 
 class WLaserBlaster : public WeaponItem
 {
+public:
 	WLaserBlaster();
 
 	virtual StatusEffect OnUpdate() override;
@@ -103,6 +104,7 @@ class WLaserBlaster : public WeaponItem
 
 class WSharpestStick : public WeaponItem
 {
+public:
 	WSharpestStick();
 
 	virtual StatusEffect OnUnequip() override;
@@ -110,6 +112,7 @@ class WSharpestStick : public WeaponItem
 
 class WMysteriousYellowAmulet : public WeaponItem
 {
+public:
 	WMysteriousYellowAmulet();
 
 	virtual StatusEffect OnUnequip() override;

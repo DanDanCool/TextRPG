@@ -43,7 +43,7 @@ WStoneSword::WStoneSword()
 WBow::WBow()
 {
 	m_Name = "Bow";
-	m_Damage = 6
+	m_Damage = 6;
 }
 
 WBerserkerAxe::WBerserkerAxe()
@@ -67,22 +67,29 @@ StatusEffect WSharpStick::OnUnequip()
 
 WIronSword::WIronSword()
 {
-	m_Name("Iron Sword";
+	m_Name = "Iron Sword";
 	m_Damage = 15;
 }
 
 WGun::WGun()
 {
 	m_Name = "Gun";
-	m_Damage = 17
+	m_Damage = 17;
 }
 
 StatusEffect WGun::OnEquip()
 {
 	printf("You equpped a gun and lost 5 defense!\n");
-	StatusAction actions[] = { StatusAction::DefenseIncrease };
+
+	StatusAction actions[] = { StatusAction::Defense };
 	int effects[] = { -5 };
-	return StatusEffect{ 1, actions, effects };
+	
+	StatusEffect statusEffect;
+	statusEffect.Size = 1;
+	statusEffect.Actions = actions;
+	statusEffect.Effects = effects;
+
+	return statusEffect;
 }
 
 WMadmanMachete::WMadmanMachete()
@@ -111,12 +118,17 @@ WSwordOfSuperiority::WSwordOfSuperiority()
 
 StatusEffect WSwordOfSuperiority::OnUpdate()
 {
-	StatusAction actions[] = { StatusAction::StrengthIncrease };
+	StatusAction actions[] = { StatusAction::Strength };
 	int effects[] = { 20 };
 
 	printf("You feel courage rushing through your veins...\nStrength increased by 20!\n");
 
-	return StatusEffect{ 1, actions, effects };
+	StatusEffect statusEffect;
+	statusEffect.Size = 1;
+	statusEffect.Actions = actions;
+	statusEffect.Effects = effects;
+
+	return statusEffect;
 }
 
 WLaserBlaster::WLaserBlaster()
@@ -127,13 +139,18 @@ WLaserBlaster::WLaserBlaster()
 
 StatusEffect WLaserBlaster::OnUpdate()
 {
-	StatusAction actions[] = { StatusAction::HealthIncrease, StatusAction::DefenseIncrease };
+	StatusAction actions[] = { StatusAction::Health, StatusAction::Defense };
 	int effects[] = { -5, -5 };
 
 	printf("The radiation emitting from the Laser Blaster drains your health...\n");
 	printf("You took 5 damage! Defense decreased by 5!\n");
 
-	return StatusEffect{ 2, actions, effects };
+	StatusEffect statusEffect;
+	statusEffect.Size = 2;
+	statusEffect.Actions = actions;
+	statusEffect.Effects = effects;
+
+	return statusEffect;
 }
 
 WSharpestStick::WSharpestStick()
@@ -156,27 +173,32 @@ WMysteriousYellowAmulet::WMysteriousYellowAmulet()
 
 StatusEffect WMysteriousYellowAmulet::OnUnequip()
 {
-	StatusAction actions = { StatusAction::HealthIncrease };
-	int effects = { -100 };
+	StatusAction actions = StatusAction::Health;
+	int effects = -100 ;
 
 	printf("You scream in agony as you try to wrench the amulet off...\n");
 	printf("You lost 100 health!\n");
 
-	return StatusEffect{ 1, actions, effects };
+	StatusEffect statusEffect;
+	statusEffect.Size = 1;
+	statusEffect.Actions = &actions;
+	statusEffect.Effects = &effects;
+
+	return statusEffect;
 }
 
 StatusEffect WMysteriousYellowAmulet::OnUpdate()
 {
-	StatusAction actions = {
-			StatusAction::HealthIncrease,
-			StatusAction::StrengthIncrease,
-			StatusAction::DefenseIncrease
-	};
-
-	int effects = { 5, 1, 2 };
+	StatusAction actions[] = { StatusAction::Health, StatusAction::Strength, StatusAction::Defense };
+	int effects[] = { 5, 1, 2 };
 
 	printf("Your yellow amulet glows mysteriously... You gained some stats!\n");
 	printf("Health increased by 5! Strength increased by 1! Defense increased by 2!\n");
 
-	return StatusEffect{ 3, actions, effects };
+	StatusEffect statusEffect;
+	statusEffect.Size = 3;
+	statusEffect.Actions = actions;
+	statusEffect.Effects = effects;
+
+	return statusEffect;
 }

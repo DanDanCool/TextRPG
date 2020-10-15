@@ -2,8 +2,6 @@
 
 #include "../StatusEffect.h"
 
-class Player;
-
 class Item
 {
 public:

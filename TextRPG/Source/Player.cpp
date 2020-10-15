@@ -11,6 +11,12 @@ Player::~Player()
 
 }
 
+void Player::OnUpdate()
+{
+	if (m_Weapon)
+		m_Weapon->OnUnequip();
+}
+
 void Player::AddItem(Item* item)
 {
 	m_Inventory.push_back(item);
@@ -21,11 +27,39 @@ void Player::PopItem(Item* item)
 	auto it = std::find(m_Inventory.begin(), m_Inventory.end(), item);
 	if (it != m_Inventory.end())
 	{
-		if (item->IsEquippable())
-			((WeaponItem*)item)->OnUnequip();
+
+		if (item == m_Weapon)
+		{
+			auto effect = m_Weapon->OnUnequip();
+			HandleStatusEffect(effect);
+
+			m_Weapon = nullptr;
+		}
+		else if (item == m_Armor)
+		{
+			auto effect = m_Weapon->OnUnequip();
+			HandleStatusEffect(effect);
+
+			m_Armor = nullptr;
+		}
+
 		m_Inventory.erase(it);
 		delete item;
 	}
+}
+
+void Player::PopItem(const char* name)
+{
+	for (auto* item : m_Inventory)
+	{
+		if (!strcmp(item->GetName(), name))
+		{
+			PopItem(item);
+			return;
+		}
+	}
+
+	printf("Poor input.");
 }
 
 bool Player::HasItem(Item* item) const
@@ -41,15 +75,49 @@ void Player::UseItem(Item* item)
 {
 	if (HasItem(item))
 	{
+		if (item->IsEquippable())
+		{
+			if (((EquippableItem*)item)->IsArmor())
+				Equip((ArmorItem*)item);
+			else
+				Equip((WeaponItem*)item);
+
+			return;
+		}
+
 		StatusEffect effect = item->Use();
 		HandleStatusEffect(effect);
 
-		if (item != m_Weapon || item != m_Armor)
+		PopItem(item);
+		delete item;
+	}
+}
+
+void Player::UseItem(const char* name)
+{
+	for (auto* item : m_Inventory)
+	{
+		if (!strcmp(item->GetName(), name))
 		{
+			if (item->IsEquippable())
+			{
+				if (((EquippableItem*)item)->IsArmor())
+					Equip((ArmorItem*)item);
+				else
+					Equip((WeaponItem*)item);
+
+				return;
+			}
+
+			StatusEffect effect = item->Use();
+			HandleStatusEffect(effect);
+
 			PopItem(item);
 			delete item;
 		}
 	}
+
+	printf("Poor input.");
 }
 
 void Player::Equip(WeaponItem* item)
@@ -62,7 +130,7 @@ void Player::Equip(WeaponItem* item)
 	}
 
 	m_Weapon = item;
-	effect = item->OnEquip(this);
+	effect = item->OnEquip();
 	HandleStatusEffect(effect);
 }
 
@@ -77,7 +145,7 @@ void Player::Equip(ArmorItem* item)
 	}
 
 	m_Armor = item;
-	effect = item->OnEquip(this);
+	effect = item->OnEquip();
 	HandleStatusEffect(effect);
 }
 
@@ -121,4 +189,20 @@ void Player::HandleStatusEffect(const StatusEffect& effect)
 			break;
 		}
 	}
+}
+
+int Player::GetDefense() const
+{
+	if (m_Armor)
+		return m_Defense + m_Armor->GetDefense();
+
+	return m_Defense;
+}
+
+int Player::GetDamage() const
+{
+	if (m_Weapon)
+		return m_Strength + m_Weapon->GetDamage();
+
+	return m_Strength;
 }

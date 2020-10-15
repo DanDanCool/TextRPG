@@ -10,7 +10,6 @@ AWoodenShield::AWoodenShield()
 }
 
 AIronArmor::AIronArmor()
-	: m_Name("Iron Armor"), m_Defense(5)
 {
 	m_Name = "Iron Armor";
 	m_Defense = 5;
@@ -23,7 +22,6 @@ ADamascusSteelArmor::ADamascusSteelArmor()
 }
 
 AMysteriousRedAmulet::AMysteriousRedAmulet()
-	: m_Defense(20)
 {
 	m_Name = Util::GetRandomName(6, true, "Mysterious Red Amulet");
 	m_Defense = 20;
@@ -31,10 +29,15 @@ AMysteriousRedAmulet::AMysteriousRedAmulet()
 
 StatusEffect AMysteriousRedAmulet::OnUpdate()
 {
-	StatusAction actions = { StatusAction::HealthIncrease };
-	int effects = { 2 };
+	StatusAction actions = StatusAction::Health;
+	int effects = 2;
 
 	printf("Your red amulet shines vibrantly...\nYou gained 2 health!\n");
 
-	return StatusEffect{ 1, actions, effects };
+	StatusEffect statusEffect;
+	statusEffect.Size = 1;
+	statusEffect.Actions = &actions;
+	statusEffect.Effects = &effects;
+
+	return statusEffect;
 }

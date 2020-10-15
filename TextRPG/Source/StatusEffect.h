@@ -14,4 +14,4 @@ struct StatusEffect
 	int Size;
 	StatusAction* Actions;
 	int* Effects;
-}
+};

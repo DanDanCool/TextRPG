@@ -16,7 +16,9 @@ private:
 	void OnUpdate();
 
 	void Reset();
+
 	void PrintPlayerVitals();
+	void PlayerInventory();
 
 	bool OnMovement();
 	void OnPlayerDebt();

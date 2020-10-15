@@ -64,7 +64,7 @@ void Game::Run()
 		printf("Type xD to quit\n");
 
 		char quitt[3];
-		scanf_s("%s", quitt, sizeof(quitt) - 1);
+		scanf_s("%2s", quitt, (uint32_t)sizeof(quitt) - 1);
 
 		if (!strcmp(quitt, "xD"))
 			return;
@@ -76,7 +76,7 @@ void Game::Start()
 	printf("\nWhat is your name?\n");
 	
 	char name[256];
-	scanf_s("%255s", name, sizeof(name) - 1);
+	scanf_s("%255s", name, (uint32_t)sizeof(name) - 1);
 
 	m_Player.SetName(name);
 
@@ -85,12 +85,12 @@ void Game::Start()
 		printf("Are you ready? (y/n) ");
 
 		char ready;
-		scanf_s("%c", &ready);
+		scanf_s("%c", &ready, 1);
 
 		switch (ready)
 		{
 		case 'y':
-			printf("Welcome, %s. Your journey begins now.\n");
+			printf("Welcome, %s. Your journey begins now.\n", name);
 			break;
 		case 'n':
 			printf("Okay, I'll ask again in 10 seconds.\n");
@@ -124,7 +124,7 @@ void Game::End()
 		printf("Would you like to play again? (y/n) ");
 	
 		char restart;
-		scanf_s("%c", &restart);
+		scanf_s("%c", &restart, 1);
 
 		switch (restart)
 		{
@@ -199,12 +199,59 @@ void Game::PrintPlayerVitals()
 	printf("Debt     : %d\n", m_Debt);
 }
 
+void Game::PlayerInventory()
+{
+	printf("--------------------------\n");
+	printf("Inventory:\n");
+
+	for (auto* item : m_Player.GetInventory())
+		printf("%s\n", item->GetName());
+
+	printf("--------------------------\n\n");
+
+	while (true)
+	{
+		printf("\t1. Use item\n\t2. Discard Item\n\t0. Return\n");
+
+		char selection;
+		scanf_s("%c", &selection, 1);
+
+		switch (selection)
+		{
+		case '1':
+		{
+			char itemName[128];
+			scanf_s("%127s", itemName, (uint32_t)sizeof(itemName) - 1);
+
+			m_Player.UseItem(itemName);
+			break;
+		}
+		case '2':
+		{
+			char itemName[128];
+			scanf_s("%127s", itemName, (uint32_t)sizeof(itemName) - 1);
+
+			m_Player.PopItem(itemName);
+			break;
+		}
+		case '0':
+			break;
+		default:
+			printf("Poor input.\n");
+			continue;
+		}
+		
+		break;
+	}
+	
+}
+
 bool Game::OnMovement()
 {
 	printf("Which way would you like to go? (n/s/e/w)");
 
 	char direction;
-	scanf_s("%c", &direction);
+	scanf_s("%c", &direction, 1);
 
 	switch (direction)
 	{
@@ -224,13 +271,17 @@ bool Game::OnMovement()
 		m_PlayerX--;
 		return true;
 
+	case 'i':
+		PlayerInventory();
+		return false;
+
 	case 'd':
 	case 'die':
 		while (true)
 		{
 			printf("This command will kill your player.\nAre you sure? (y/n) ");
 			char sure;
-			scanf("%c", &sure);
+			scanf_s("%c", &sure, 1);
 
 			switch (sure)
 			{
@@ -337,11 +388,11 @@ void Game::OnShopEncounter()
 	printf("You come across a shop with three items.\n\n");
 	
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
-	printf("The first item is %s%s, and costs %d money\n", prefix, *(shop.Items)->GetName(), *(shop.Costs));
+	printf("The first item is %s%s, and costs %d money\n", prefix, (*(shop.Items))->GetName(), *(shop.Costs));
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
-	printf("The second item is %s%s, and costs %d money\n", prefix, *(shop.Items + 1)->GetName(), *(shop.Costs + 1));
+	printf("The second item is %s%s, and costs %d money\n", prefix, (*(shop.Items + 1))->GetName(), *(shop.Costs + 1));
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
-	printf("The third item is %s%s, and costs %d money\n", prefix, *(shop.Items + 2)->GetName(), *(shop.Costs + 2));
+	printf("The third item is %s%s, and costs %d money\n", prefix, (*(shop.Items + 2))->GetName(), *(shop.Costs + 2));
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	printf("The fourth item is the %s, and costs %d money\n", shop.ScoreItemName, *(shop.Costs + 3));
 
@@ -350,21 +401,21 @@ void Game::OnShopEncounter()
 		printf("\nPress '1', '2', or '3' to select an item. Press '0' to purchase none of them.\n");
 
 		char selection;
-		scanf_s("%c", &selection);
+		scanf_s("%c", &selection, 1);
 
 		switch (selection)
 		{
 		case '1':
-			printf("You purchased %s%s for %d money\n", prefix, *(shop.Items)->GetName(), *(shop.Costs));
+			printf("You purchased %s%s for %d money\n", prefix, (*(shop.Items))->GetName(), *(shop.Costs));
 			m_Player.AddItem(*(shop.Items));
 			break;
 		case '2':
-			printf("You purchased %s%s for %d money\n", prefix, *(shop.Items + 1)->GetName(), *(shop.Costs + 1));
-			m_Player.AddItem(shop.Items + 1);
+			printf("You purchased %s%s for %d money\n", prefix, (*(shop.Items + 1))->GetName(), *(shop.Costs + 1));
+			m_Player.AddItem(*(shop.Items + 2));
 			break;
 		case '3':
-			printf("You purchased %s%s for %d money\n", prefix, *(shop.Items + 2)->GetName(), *(shop.Costs + 2));
-			m_Player.AddItem(shop.Items + 2);
+			printf("You purchased %s%s for %d money\n", prefix, (*(shop.Items + 2))->GetName(), *(shop.Costs + 2));
+			m_Player.AddItem(*(shop.Items + 2));
 			break;
 		case '4':
 			printf("You purchased the %s for %d money\n", shop.ScoreItemName, *(shop.Costs + 3));
@@ -445,7 +496,7 @@ void Game::OnEnemyEncounter()
 		if (Random::UInt32(0, 3) == 0)
 		{
 			printf("You eat the carcass.\n");
-			printf("You gain %d health.\n");
+			printf("You gain %d health.\n", enemy.Health / 10);
 
 			StatusAction actions[] = {
 				StatusAction::Money, StatusAction::Health
@@ -663,14 +714,14 @@ void Game::OnMiscEncounter()
 		}
 		else
 		{
-			effect += 3;
+			effect = 3;
 
 			printf("onto a blanket of beautiful flowers!\n");
 			printf(" You gain three health.\n");
 		}
 
 		statusEffect.Effects = &effect;
-		m_Player.HandleStatusEffect(StatusEffect);
+		m_Player.HandleStatusEffect(statusEffect);
 
 		printf("--------------------------\n");
 	}
@@ -724,7 +775,7 @@ void Game::OnMiscEncounter()
 		}
 
 		statusEffect.Effects = &effect;
-		m_Player.HandleStatusEffect(StatusEffect);
+		m_Player.HandleStatusEffect(statusEffect);
 
 		printf("--------------------------\n");
 	}

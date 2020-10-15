@@ -162,6 +162,8 @@ Shop CreateShop1()
 	shop.Items = items;
 	shop.Costs = costs;
 	shop.ScoreItemName = SKILL_ITEMS1[Random::UInt32(0, 3)];
+
+	return shop;
 }
 
 Shop CreateShop2()
@@ -182,6 +184,8 @@ Shop CreateShop2()
 	shop.Items = items;
 	shop.Costs = costs;
 	shop.ScoreItemName = SKILL_ITEMS2[Random::UInt32(0, 3)];
+
+	return shop;
 }
 
 Shop CreateShop3()
@@ -202,6 +206,8 @@ Shop CreateShop3()
 	shop.Items = items;
 	shop.Costs = costs;
 	shop.ScoreItemName = SKILL_ITEMS2[Random::UInt32(0, 3)];
+
+	return shop;
 }
 
 Shop CreateShop4()
@@ -222,4 +228,6 @@ Shop CreateShop4()
 	shop.Items = items;
 	shop.Costs = costs;
 	shop.ScoreItemName = SKILL_ITEMS4[Random::UInt32(0, 3)];
+
+	return shop;
 }

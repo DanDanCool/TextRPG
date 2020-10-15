@@ -11,15 +11,19 @@ public:
 	Player();
 	~Player();
 
+	void OnUpdate();
+
 	const char* GetName() const { return m_Name; }
 	void SetName(const char* name) { m_Name = name; }
 
 	void AddItem(Item* item);
 	void PopItem(Item* item);
+	void PopItem(const char* name);
 
 	bool HasItem(Item* item) const;
 
 	void UseItem(Item* item);
+	void UseItem(const char* name);
 
 	void Equip(WeaponItem* item);
 	void Equip(ArmorItem* item);
@@ -29,10 +33,12 @@ public:
 
 	void HandleStatusEffect(const StatusEffect& effect);
 
+	const std::vector<Item*>& GetInventory() const { return m_Inventory; }
+
 	int GetHealth() const { return m_Health; }
-	int GetDefense() const { return m_Defense + m_Armor->GetDefense(); }
-	int GetDamage() const { return m_Strength + m_Weapon->GetDamage(); }
 	int GetMoney() const { return m_Money; }
+	int GetDefense() const;
+	int GetDamage() const;
 
 	bool IsAlive() const { return m_bAlive; }
 
