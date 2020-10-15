@@ -385,7 +385,16 @@ void Game::OnShopEncounter()
 
 void Game::OnRandomEncounter()
 {
-	
+	int rng = Random::UInt32(0, 99);
+
+	if (rng < 10)
+		OnEnemyEncounter();
+	else if (rng < 15)
+		OnCrateEncounter();
+	else if (rng == 99)
+		OnWizardEncounter();
+	else
+		OnMiscEncounter();
 }
 
 void Game::OnEnemyEncounter()
@@ -625,118 +634,126 @@ void Game::OnCrateEncounter()
 
 void Game::OnMiscEncounter()
 {
-	if (random.randint(0, 20) == 0)
+	if (Random::UInt32(0, 20) == 0)
 	{
+		StatusAction action = StatusAction::Health;
+		int effect;
+
+		StatusEffect statusEffect;
+		statusEffect.Size = 1;
+		statusEffect.Actions = &action;
+
 		printf("--------------------------");
 		printf("You fell");
-		suspense(3);
-		if (random.randint(0, 2) == 0)
-		{
-			sys.stdout.write("into a pit of brutally sharp spikes.")
-			sys.stdout.flush()
-			print(" You take three damage.")
-			health -= 3
-			branch.append("You fell into a pit of brutally sharp spikes.")
-			playervitals()
-			print("--------------------------")
-		}
-		else if (random.randint(0, 1) == 0)
-		{
-				sys.stdout.write("onto the ground.")
-				sys.stdout.flush()
-				print(" You take one damage.")
-				health -= 1
-				branch.append("You fell onto the ground.")
-				playervitals()
-				print("--------------------------")
-		}
-		else
-		{
-			sys.stdout.write("onto a blanket of beautiful flowers!")
-			sys.stdout.flush()
-			print(" You gain three health.")
-			health += 3
-			branch.append("You fell onto a blanket of beautiful flowers.")
-			playervitals()
-			print("--------------------------")
-		}
-	}
-	if (random.randint(69, 420) == 69)
-	{
-		print("--------------------------")
-		print("Ray's your bae")
-		print("You win!")
-		print("--------------------------")
-	}
-	if (random.randint(0, 60) == 0)
-	{
-		print("--------------------------");
-		print("You picked up an orb");
-		suspense(3);
+		Suspense(3);
 
-		if (random.randint(0, 1) == 0)
+		if (Random::UInt32(0, 2) == 0)
 		{
-			print("It's a holy orb.")
-			print("You gain one health.")
-			health += 1
-			branch.append("You picked up a holy orb.")
-			playervitals()
-			print("--------------------------")
+			effect = -3;
+
+			printf("into a pit of brutally sharp spikes.\n");
+			printf(" You take three damage.\n");
+		}
+		else if (Random::UInt32(0, 1) == 0)
+		{
+			effect = -1;
+
+			printf("onto the ground.\n");
+			printf(" You take one damage.\n");
 		}
 		else
 		{
-			print("It's a dark orb.")
-			print("You take one damage.")
-			health -= 1
-			branch.append("You picked up a dark orb.")
-			playervitals()
-			print("--------------------------")
+			effect += 3;
+
+			printf("onto a blanket of beautiful flowers!\n");
+			printf(" You gain three health.\n");
 		}
-		if (random.randint(0, 90) == 0)
+
+		statusEffect.Effects = &effect;
+		m_Player.HandleStatusEffect(StatusEffect);
+
+		printf("--------------------------\n");
+	}
+
+	else if (Random::UInt32(0, 60) == 0)
+	{
+		StatusAction action = StatusAction::Health;
+		int effect;
+
+		StatusEffect statusEffect;
+		statusEffect.Size = 1;
+		statusEffect.Actions = &action;
+
+		printf("--------------------------");
+		printf("You picked up an orb");
+		Suspense(3);
+
+		if (Random::UInt32(0, 1) == 0)
 		{
-			print("--------------------------")
-			print("You picked up a greater orb")
-			suspense(3)
-			if (random.randint(0, 1) == 0)
+			effect = 1;
+
+			printf("It's a holy orb.\n");
+			printf("You gain one health.\n");
+		}
+		else
+		{
+			effect = -1;
+
+			printf("It's a dark orb.\n");
+			printf("You take one damage.\n");
+		}
+		if (Random::UInt32(0, 90) == 0)
+		{
+			printf("You picked up a greater orb\n");
+			Suspense(3);
+
+			if (Random::UInt32(0, 1) == 0)
 			{
-				print("It's a greater holy orb.")
-				print("You gain two health.")
-				health += 2
-				branch.append("You picked up a greater holy orb.")
-				playervitals()
-				print("--------------------------")
+				effect = 2;
+
+				printf("It's a greater holy orb.\n");
+				printf("You gain two health.\n");
 			}
 			else
 			{
-				print("It's a greater dark orb.")
-				print("You take two damage.")
-				health -= 2
-				branch.append("You picked up a greater dark orb.")
-				playervitals()
-				print("--------------------------")
+				effect = -2;
+
+				printf("It's a greater dark orb.\n");
+				printf("You take two damage.\n");
 			}
 		}
-	}
-	if (random.randint(0, 120) == 0)
-	{
-		print("--------------------------")
-		print("There's a hole in the ground")
-		suspense(3)
 
-		if (random.randint(0, 1) == 0)
+		statusEffect.Effects = &effect;
+		m_Player.HandleStatusEffect(StatusEffect);
+
+		printf("--------------------------\n");
+	}
+
+	else if (Random::UInt32(0, 120) == 0)
+	{
+		printf("--------------------------\n");
+		printf("There's a hole in the ground\n");
+		printf("What's at the bottom?\n");
+		Suspense(3);
+
+		if (Random::UInt32(0, 1) == 0)
 		{
-			print("It's buried treasure!")
-			moneyearned = int(step / 4) + random.randint(25, 50)
-			money += moneyearned
-			print("You gain " + str(moneyearned) + " cash.")
-			branch.append("You found buried treasure.")
-			playervitals()
+			StatusAction action = StatusAction::Money;
+			int effect = m_Step / 4 + Random::UInt32(25, 50);
+
+			StatusEffect statusEffect;
+			statusEffect.Size = 1;
+			statusEffect.Actions = &action;
+			statusEffect.Effects = &effect;
+
+			m_Player.HandleStatusEffect(statusEffect);
+
+			printf("It's buried treasure!\n");
+			printf("You gain %d cash.\n", effect);
 		}
 		else
 		{
-			print("There's a crate at the bottom.")
-			print("What's inside?")
-			suspense(3)
+			OnCrateEncounter();
 		}
 	}
 }
