@@ -1,10 +1,18 @@
 #include "Game.h"
 
+#include "Enemy.h"
 #include "Shop.h"
+
+#include "Util.h"
 #include "Random.h"
 
 #include <stdio.h>
 #include <thread>
+
+static constexpr const char* ONOMATOPEIA[] = {
+	"Oof!", "Ouch!", "Pew!", "Kablam!", "Pow!", "Eek!", "Eep!", "Blam!", "Ugh!", "Ah!", "Argh!", "Ough!"
+};
+
 
 static void Suspense(uint32_t count, bool lineBreak = false)
 {
@@ -15,6 +23,17 @@ static void Suspense(uint32_t count, bool lineBreak = false)
 
 		if (lineBreak)
 			printf("\n");
+	}
+}
+
+static void SoundEffect(uint32_t count)
+{
+	std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+	for (uint32_t i = 0; i < count; i++)
+	{
+		printf("%s\n", ONOMATOPEIA[Random::UInt32(0, 11)]);
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	}
 }
 
@@ -353,6 +372,7 @@ void Game::OnShopEncounter()
 			m_Score += m_Step / 2 + Random::UInt32(0, 20);
 			break;
 		case '0':
+			printf("You don't purchase anything.\n");
 			break;
 		default:
 			printf("Poor input.\n");
@@ -365,5 +385,358 @@ void Game::OnShopEncounter()
 
 void Game::OnRandomEncounter()
 {
+	
+}
 
+void Game::OnEnemyEncounter()
+{
+	printf("--------------------------\n");
+
+	Enemy enemy;
+
+	if (Random::UInt32(0, 10) == 0)
+	{
+		enemy = CreateShinyEnemy(m_Step);
+		printf("You fight a shiny enemy named %s\n", enemy.Name);
+	}
+	else
+	{
+		enemy = CreateNormalEnemy(m_Step);
+		printf("You fight an enemy named %s\n", enemy.Name);
+	}
+
+	SoundEffect(3);
+
+	if (enemy.Health > (m_Player.GetDamage() * 3))
+	{
+		printf("ANd lose\n");
+		printf("You take %d damage\n", enemy.Strength);
+
+		StatusAction action = StatusAction::Health;
+		int effect = -enemy.Strength;
+
+		StatusEffect statusEffect;
+		statusEffect.Size = 1;
+		statusEffect.Actions = &action;
+		statusEffect.Effects = &effect;
+
+		m_Player.HandleStatusEffect(statusEffect);
+	}
+	else
+	{
+		printf("ANd win\n");
+		printf("You gain %d money.\n", enemy.Money);
+
+		m_Score += enemy.Health / 5;
+
+		StatusEffect statusEffect;
+		StatusAction* statusActions;
+		int* statusEffects;
+
+		if (Random::UInt32(0, 3) == 0)
+		{
+			printf("You eat the carcass.\n");
+			printf("You gain %d health.\n");
+
+			StatusAction actions[] = {
+				StatusAction::Money, StatusAction::Health
+			};
+
+			int effects[] = {
+				enemy.Money, enemy.Health / 10
+			};
+
+			statusEffect.Size = 2;
+			statusActions = actions;
+			statusEffects = effects;
+		}
+		else
+		{
+			StatusAction actions = StatusAction::Money;
+			int effects = enemy.Money;
+
+			statusEffect.Size = 1;
+			statusActions = &actions;
+			statusEffects = &effects;
+		}
+
+		statusEffect.Actions = statusActions;
+		statusEffect.Effects = statusEffects;
+
+		m_Player.HandleStatusEffect(statusEffect);
+	}
+
+	printf("--------------------------\n");
+}
+
+void Game::OnWizardEncounter()
+{
+	printf("--------------------------\n");
+
+	int rng = Random::UInt32(0, 21);
+
+	StatusEffect statusEffect;
+	statusEffect.Size = 1;
+
+	if (rng < 10)
+	{
+		printf("A dark wizard named %s curses you!\n", Util::GetRandomName(6, true));
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		printf("ZAP!\n");
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		printf("You take 2 damage.");
+
+		StatusAction actions = StatusAction::Health;
+		int effects = -2;
+
+		statusEffect.Actions = &actions;
+		statusEffect.Effects = &effects;
+	}
+	else if (rng < 20)
+	{
+		printf("A holy wizard named %s blesses you!\n", Util::GetRandomName(6, true));
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		printf("ZAP!\n");
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		printf("You gain 2 health.");
+
+		StatusAction actions = StatusAction::Health;
+		int effects = 2;
+
+		statusEffect.Actions = &actions;
+		statusEffect.Effects = &effects;
+	}
+	else if (rng == 20)
+	{
+		printf("A shiny dark wizard named %s curses you!\n", Util::GetRandomName(6, true));
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		printf("ZAP!\n");
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		printf("You 5 damage.");
+
+		StatusAction actions = StatusAction::Health;
+		int effects = -5;
+
+		statusEffect.Actions = &actions;
+		statusEffect.Effects = &effects;
+	}
+	else
+	{
+		printf("A shiny holy wizard named %s blesses you!\n", Util::GetRandomName(6, true));
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		printf("ZAP!\n");
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		printf("You gain 5 health.");
+
+		StatusAction actions = StatusAction::Health;
+		int effects = 5;
+
+		statusEffect.Actions = &actions;
+		statusEffect.Effects = &effects;
+	}
+
+	m_Player.HandleStatusEffect(statusEffect);
+}
+
+void Game::OnCrateEncounter()
+{
+	printf("--------------------------\n");
+	printf("You found a crate!\n");
+	printf("What's inside?\n");
+	Suspense(3);
+
+	int rng = Random::UInt32(0, 6);
+
+	if (rng == 3)
+	{
+		printf("You found dim sum.\n");
+		printf("You gained one health.\n");
+		
+		StatusAction action = StatusAction::Health;
+		int effect = 1;
+
+		StatusEffect statusEffect;
+		statusEffect.Size = 1;
+		statusEffect.Actions = &action;
+		statusEffect.Effects = &effect;
+
+		m_Player.HandleStatusEffect(statusEffect);
+	}
+
+	else if (rng < 3)
+	{
+		StatusAction action = StatusAction::Money;
+		int effect = m_Step / 5 + Random::UInt32(4, 8);
+
+		printf("You found some cash.\n");
+		printf("You gained %d money.\n", effect);
+
+		StatusEffect statusEffect;
+		statusEffect.Size = 1;
+		statusEffect.Actions = &action;
+		statusEffect.Effects = &effect;
+
+		m_Player.HandleStatusEffect(statusEffect);
+	}
+
+	else if (rng == 4)
+	{
+		printf("You found a lottery ticket.\n");
+		printf("You decide to enter.\n");
+		Suspense(3);
+		if (Random::UInt32(0, 100) == 0)
+		{
+			StatusAction actions[] = {
+				StatusAction::Money, StatusAction::Health
+			};
+
+			int effects[] = {
+				m_Step + 500, 50
+			};
+
+			StatusEffect statusEffect;
+			statusEffect.Size = 2;
+			statusEffect.Actions = actions;
+			statusEffect.Effects = effects;
+
+			printf("ANd win\n");
+			printf("You gain %d money.\n", effects[0]);
+			printf("You gain fifty health from a holy blessing.\n");
+			printf("You gain a hundred score from fame due to winning the crate lottery!\n");
+			printf("Seriously, go buy a lottery ticket.\n");
+
+			m_Score += 100;
+			m_Player.HandleStatusEffect(statusEffect);
+		}
+
+		else
+		{
+			printf("ANd lose");
+		}
+	}
+
+	else
+	{
+		printf("There's nothing in the crate.\n");
+	}
+
+	printf("--------------------------\n");
+}
+
+void Game::OnMiscEncounter()
+{
+	if (random.randint(0, 20) == 0)
+	{
+		printf("--------------------------");
+		printf("You fell");
+		suspense(3);
+		if (random.randint(0, 2) == 0)
+		{
+			sys.stdout.write("into a pit of brutally sharp spikes.")
+			sys.stdout.flush()
+			print(" You take three damage.")
+			health -= 3
+			branch.append("You fell into a pit of brutally sharp spikes.")
+			playervitals()
+			print("--------------------------")
+		}
+		else if (random.randint(0, 1) == 0)
+		{
+				sys.stdout.write("onto the ground.")
+				sys.stdout.flush()
+				print(" You take one damage.")
+				health -= 1
+				branch.append("You fell onto the ground.")
+				playervitals()
+				print("--------------------------")
+		}
+		else
+		{
+			sys.stdout.write("onto a blanket of beautiful flowers!")
+			sys.stdout.flush()
+			print(" You gain three health.")
+			health += 3
+			branch.append("You fell onto a blanket of beautiful flowers.")
+			playervitals()
+			print("--------------------------")
+		}
+	}
+	if (random.randint(69, 420) == 69)
+	{
+		print("--------------------------")
+		print("Ray's your bae")
+		print("You win!")
+		print("--------------------------")
+	}
+	if (random.randint(0, 60) == 0)
+	{
+		print("--------------------------");
+		print("You picked up an orb");
+		suspense(3);
+
+		if (random.randint(0, 1) == 0)
+		{
+			print("It's a holy orb.")
+			print("You gain one health.")
+			health += 1
+			branch.append("You picked up a holy orb.")
+			playervitals()
+			print("--------------------------")
+		}
+		else
+		{
+			print("It's a dark orb.")
+			print("You take one damage.")
+			health -= 1
+			branch.append("You picked up a dark orb.")
+			playervitals()
+			print("--------------------------")
+		}
+		if (random.randint(0, 90) == 0)
+		{
+			print("--------------------------")
+			print("You picked up a greater orb")
+			suspense(3)
+			if (random.randint(0, 1) == 0)
+			{
+				print("It's a greater holy orb.")
+				print("You gain two health.")
+				health += 2
+				branch.append("You picked up a greater holy orb.")
+				playervitals()
+				print("--------------------------")
+			}
+			else
+			{
+				print("It's a greater dark orb.")
+				print("You take two damage.")
+				health -= 2
+				branch.append("You picked up a greater dark orb.")
+				playervitals()
+				print("--------------------------")
+			}
+		}
+	}
+	if (random.randint(0, 120) == 0)
+	{
+		print("--------------------------")
+		print("There's a hole in the ground")
+		suspense(3)
+
+		if (random.randint(0, 1) == 0)
+		{
+			print("It's buried treasure!")
+			moneyearned = int(step / 4) + random.randint(25, 50)
+			money += moneyearned
+			print("You gain " + str(moneyearned) + " cash.")
+			branch.append("You found buried treasure.")
+			playervitals()
+		}
+		else
+		{
+			print("There's a crate at the bottom.")
+			print("What's inside?")
+			suspense(3)
+		}
+	}
 }

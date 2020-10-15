@@ -30,8 +30,8 @@ public:
 	void HandleStatusEffect(const StatusEffect& effect);
 
 	int GetHealth() const { return m_Health; }
-	int GetDefense() const { return m_Defense; }
-	int GetStrength() const { return m_Strength; }
+	int GetDefense() const { return m_Defense + m_Armor->GetDefense(); }
+	int GetDamage() const { return m_Strength + m_Weapon->GetDamage(); }
 	int GetMoney() const { return m_Money; }
 
 	bool IsAlive() const { return m_bAlive; }

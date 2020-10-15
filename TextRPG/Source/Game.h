@@ -21,7 +21,12 @@ private:
 	bool OnMovement();
 	void OnPlayerDebt();
 	void OnShopEncounter();
+
 	void OnRandomEncounter();
+	void OnEnemyEncounter();
+	void OnWizardEncounter();
+	void OnCrateEncounter();
+	void OnMiscEncounter();
 
 private:
 	Player m_Player;

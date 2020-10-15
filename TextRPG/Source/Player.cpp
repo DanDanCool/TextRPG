@@ -116,6 +116,9 @@ void Player::HandleStatusEffect(const StatusEffect& effect)
 			m_Defense += *(effect.Effects + i);
 			m_Defense = Util::Clamp(0, m_Defense);
 			break;
+		case StatusAction::Money:
+			m_Money += *(effect.Effects + i);
+			break;
 		}
 	}
 }

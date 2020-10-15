@@ -5,7 +5,8 @@ enum class StatusAction
 	None = 0,
 	Health,
 	Strength,
-	Defense
+	Defense,
+	Money
 };
 
 struct StatusEffect

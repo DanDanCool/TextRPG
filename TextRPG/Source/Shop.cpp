@@ -6,87 +6,87 @@
 
 #include "Random.h"
 
-static const int HEALTH_ITEMS1[] = {
+static constexpr int HEALTH_ITEMS1[] = {
 	0, //HBandage
 	1, //HFish
 	2  //HHamburger
 };
 
-static const int HEALTH_ITEMS2[] = {
+static constexpr int HEALTH_ITEMS2[] = {
 	3, //HHealingPotion
 	4, //HElixirOfLongevity
 	5  //HSuperFish
 };
 
-static const int HEALTH_ITEMS3[] = {
+static constexpr int HEALTH_ITEMS3[] = {
 	6, //HGreaterHealingPotion
 	7, //HGreaterElixirOfLongevity
 	8  //HSupererFish
 };
 
-static const int HEALTH_ITEMS4[] = {
+static constexpr int HEALTH_ITEMS4[] = {
 	9,  //HSupremeHealingPotion
 	10, //HSupremeElixirOfLongevity
 	11  //HSupremeFish
 };
 
-static const int WEAPON_ITEMS1[] = {
+static constexpr int WEAPON_ITEMS1[] = {
 	12, //WWoodenSword
 	13, //WThrowingRocks
 	14, //WAxe
 	15  //WStick
 };
 
-static const int WEAPON_ITEMS2[] = {
+static constexpr int WEAPON_ITEMS2[] = {
 	16, //WStoneSword
 	17, //WBow
 	18, //WBerserkerAxe
 	19  //WSharpStick
 };
 
-static const int WEAPON_ITEMS3[] = {
+static constexpr int WEAPON_ITEMS3[] = {
 	20, //WIronSword
 	21, //WGun
 	22, //WMadmanMachete
 	23  //WSharperStick
 };
 
-static const int WEAPON_ITEMS4[] = {
+static constexpr int WEAPON_ITEMS4[] = {
 	24, //WSwordOfSuperiority
 	25, //WLaserBlaster
 	26, //WSharpestStick
 	27  //WMysteriousYellowAmulet
 };
 
-static const int DEFENSE_ITEMS[] = {
+static constexpr int DEFENSE_ITEMS[] = {
 	28, //AWoodenShield
 	29, //AIronArmor
 	30, //ADamascusSteelArmor
 	31  //AMysteriousRedAmulet
 };
 
-static const char* SKILL_ITEMS1[] = {
+static constexpr const char* SKILL_ITEMS1[] = {
 	"Point Booster",
 	"Skill of Bribery",
 	"Skill of Charm",
 	"Skill of Begging"
 };
 
-static const char* SKILL_ITEMS2[] = {
+static constexpr const char* SKILL_ITEMS2[] = {
 	"Super Point Booster",
 	"Skill of Thievery",
 	"Skill of Manipulation",
 	"Skill of Desperation"
 };
 
-static const char* SKILL_ITEMS3[] = {
+static constexpr const char* SKILL_ITEMS3[] = {
 	"Ultra Point Booster",
 	"Skill of Piracy",
 	"Skill of Extortion",
 	"Skill of Politics"
 };
 
-static const char* SKILL_ITEMS4[] = {
+static constexpr const char* SKILL_ITEMS4[] = {
 	"Super Ultra Mega Point Boosterino",
 	"Skill of Swashbuckling",
 	"Skill of Domination",
