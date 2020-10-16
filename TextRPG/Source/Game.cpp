@@ -152,6 +152,8 @@ void Game::OnUpdate()
 {
 	while (m_bRun)
 	{
+		m_Player.OnUpdate();
+
 		if (m_Player.GetMoney() < 0)
 			m_Debt++;
 
@@ -159,18 +161,17 @@ void Game::OnUpdate()
 	
 		bool moved = OnMovement();
 
-		if (moved)
+		if (moved && m_Player.IsAlive())
 		{
 			m_Score++;
 			m_Step++;
 
 			OnPlayerDebt();
 			
-			if (m_Player.IsAlive())
-				if (m_Step % 40 == 0)
-					OnShopEncounter();
-				else
-					OnRandomEncounter();
+			if (m_Step % 40 == 0)
+				OnShopEncounter();
+			else
+				OnRandomEncounter();
 		}
 
 		if (!m_Player.IsAlive())
@@ -202,10 +203,12 @@ void Game::PrintPlayerVitals()
 	printf("\n");
 	printf("Location : %d, %d\n", m_PlayerX, m_PlayerY);
 	printf("Health   : %d\n", m_Player.GetHealth());
-	printf("Score    : %d\n", m_Score);
+	printf("Damage   : %d\n", m_Player.GetDamage());
+	printf("Defense  : %d\n", m_Player.GetDefense());
 	printf("Money    : %d\n", m_Player.GetMoney());
 	printf("Step     : %d\n", m_Step);
 	printf("Debt     : %d\n", m_Debt);
+	printf("Score    : %d\n", m_Score);
 }
 
 void Game::PlayerInventory()
@@ -433,7 +436,7 @@ void Game::OnShopEncounter()
 
 	while (true)
 	{
-		printf("\nPress '1', '2', or '3' to select an item. Press '0' to purchase none of them.\n");
+		printf("\nPress '1', '2', '3', or '4' to select an item. Press '0' to purchase none of them.\n");
 
 		getchar();
 		char selection;

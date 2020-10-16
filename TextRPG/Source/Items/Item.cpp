@@ -8,8 +8,6 @@
 
 StatusEffect Item::Use()
 {
-	printf("Nothing happened\n");
-
 	StatusAction actions = StatusAction::None;
 	int effects = 0;
 	

@@ -6,21 +6,21 @@
 HBandage::HBandage()
 {
 	m_Name = "Bandage";
-	m_HealAmount = 5;
+	m_HealAmount = 15;
 }
 
 HFish::HFish()
 {
 	m_Name = "Fish";
-	m_HealAmount = 3;
+	m_HealAmount = 10;
 }
 
 StatusEffect HFish::Use()
 {
 	StatusAction actions[] = { StatusAction::Health, StatusAction::Strength };
-	int effects[] = { m_HealAmount, 1 };
+	int effects[] = { m_HealAmount, 2 };
 
-	printf("You ate a fish!\nYou gain 3 health and 1 strength!\n");
+	printf("You ate a fish!\nYou gain 10 health and 2 strength!\n");
 
 	StatusEffect statusEffect;
 	statusEffect.Size = 2;
@@ -33,33 +33,33 @@ StatusEffect HFish::Use()
 HHamburger::HHamburger()
 {
 	m_Name = "Hamburger";
-	m_HealAmount = 5;
+	m_HealAmount = 15;
 }
 
 HHealingPotion::HHealingPotion()
 {
 	m_Name = "Healing Potion";
-	m_HealAmount = 10;
+	m_HealAmount = 25;
 }
 
 HElixirOfLongevity::HElixirOfLongevity()
 {
 	m_Name = "Elixir of Longevity";
-	m_HealAmount = 11;
+	m_HealAmount = 30;
 }
 
 HSuperFish::HSuperFish()
 {
 	m_Name = "Super Fish";
-	m_HealAmount = 7;
+	m_HealAmount = 20;
 }
 
 StatusEffect HSuperFish::Use()
 {
 	StatusAction actions[] = { StatusAction::Health, StatusAction::Strength };
-	int effects[] = { m_HealAmount, 4 };
+	int effects[] = { m_HealAmount, 8 };
 
-	printf("You eat a super fish!\nYou gain 7 health and 4 strength\n");
+	printf("You eat a super fish!\nYou gain 20 health and 8 strength\n");
 
 	StatusEffect statusEffect;
 	statusEffect.Size = 2;
@@ -72,28 +72,28 @@ StatusEffect HSuperFish::Use()
 HGreaterHealingPotion::HGreaterHealingPotion()
 {
 	m_Name = "Greater Healing Potion";
-	m_HealAmount = 15;
+	m_HealAmount = 40;
 }
 
 HGreaterElixirOfLongevity::HGreaterElixirOfLongevity()
 {
 	m_Name = "Greater Elixir of Longevity";
-	m_HealAmount = 17;
+	m_HealAmount = 45;
 }
 
 HSupererFish::HSupererFish()
 {
 	m_Name = "Superer Fish";
-	m_HealAmount = 12;
+	m_HealAmount = 35;
 
 }
 
 StatusEffect HSupererFish::Use()
 {
 	StatusAction actions[] = { StatusAction::Health, StatusAction::Strength, StatusAction::Defense };
-	int effects[] = { m_HealAmount, 8, 2 };
+	int effects[] = { m_HealAmount, 15, 10 };
 
-	printf("You ate a superer fish!\nHealth increased by 12! Strength increased by 8! Defense increased by 2!\n");
+	printf("You ate a superer fish!\nHealth increased by 35! Strength increased by 15! Defense increased by 10!\n");
 
 	StatusEffect statusEffect;
 	statusEffect.Size = 3;
@@ -106,21 +106,21 @@ StatusEffect HSupererFish::Use()
 HSupremeHealingPotion::HSupremeHealingPotion()
 {
 	m_Name = Util::GetRandomName(6, true, "'s Supreme Healing Potion");
-	m_HealAmount = 20;
+	m_HealAmount = 90;
 }
 
 HSupremeElixirOfLongevity::HSupremeElixirOfLongevity()
 {
 	m_Name = Util::GetRandomName(6, true, "'s Supreme Elixir of Longevity");
-	m_HealAmount = 22;
+	m_HealAmount = 100;
 }
 
 StatusEffect HSupremeElixirOfLongevity::Use()
 {
 	StatusAction actions[] = { StatusAction::Health, StatusAction::Defense };
-	int effects[] = { m_HealAmount, 10 };
+	int effects[] = { m_HealAmount, 30 };
 
-	printf("You drink the Supreme Elixir of Longevity...\nHealth increased by 22! Defense Increased by 10!\n");
+	printf("You drink the Supreme Elixir of Longevity...\nHealth increased by 100! Defense Increased by 30!\n");
 
 	StatusEffect statusEffect;
 	statusEffect.Size = 2;
@@ -133,7 +133,7 @@ StatusEffect HSupremeElixirOfLongevity::Use()
 HSupremeFish::HSupremeFish()
 {
 	m_Name = Util::GetRandomName(6, true, "'s Supreme Fish");
-	m_HealAmount = 14;
+	m_HealAmount = 80;
 }
 
 StatusEffect HSupremeFish::Use()
@@ -141,7 +141,7 @@ StatusEffect HSupremeFish::Use()
 	StatusAction actions[] = { StatusAction::Health, StatusAction::Strength, StatusAction::Defense };
 	int effects[] = { m_HealAmount, 20, 20 };
 
-	printf("You eat the supreme fish...\nHealth increased by 14! Strength increased by 20! Defense increased by 20!\n");
+	printf("You eat the supreme fish...\nHealth increased by 80! Strength increased by 20! Defense increased by 20!\n");
 
 	StatusEffect statusEffect;
 	statusEffect.Size = 3;

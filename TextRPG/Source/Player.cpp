@@ -23,16 +23,25 @@ void Player::Reset()
 
 	m_bAlive = true;
 
-	m_Health = 3;
-	m_Defense = 0;
-	m_Strength = 2;
+	m_Health = 20;
+	m_Defense = 10;
+	m_Strength = 15;
 	m_Money = 30;
 }
 
 void Player::OnUpdate()
 {
 	if (m_Weapon)
-		m_Weapon->OnUnequip();
+	{
+		auto statusEffect = m_Weapon->OnUpdate();
+		HandleStatusEffect(statusEffect);
+	}
+
+	if (m_Armor)
+	{
+		auto statusEffect = m_Armor->OnUpdate();
+		HandleStatusEffect(statusEffect);
+	}
 }
 
 void Player::AddItem(Item* item)

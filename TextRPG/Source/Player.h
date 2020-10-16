@@ -54,8 +54,8 @@ private:
 
 	bool m_bAlive = true;
 
-	int m_Health = 10;
-	int m_Defense = 0;
-	int m_Strength = 5;
+	int m_Health = 20;
+	int m_Defense = 10;
+	int m_Strength = 15;
 	int m_Money = 30;
 };
