@@ -4,13 +4,17 @@ class Item;
 
 struct Shop
 {
-	int* Costs;
-	Item** Items;
+	int Costs[4];
+
+	Item* HealthItem;
+	Item* WeaponItem;
+	Item* ArmorItem;
+	
 	const char* ScoreItemName;
 };
 
 Shop CreateShop(int step);
-Shop CreateShop1();
-Shop CreateShop2();
-Shop CreateShop3();
-Shop CreateShop4();
+inline Shop CreateShop1();
+inline Shop CreateShop2();
+inline Shop CreateShop3();
+inline Shop CreateShop4();

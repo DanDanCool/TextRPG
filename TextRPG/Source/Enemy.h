@@ -12,3 +12,5 @@ struct Enemy
 
 Enemy CreateNormalEnemy(int step);
 Enemy CreateShinyEnemy(int step);
+
+void DestroyEnemy(Enemy& enemy);

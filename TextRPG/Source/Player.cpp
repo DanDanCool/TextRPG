@@ -8,7 +8,25 @@ Player::Player()
 
 Player::~Player()
 {
+	delete[] m_Name;
+}
 
+void Player::Reset()
+{
+	m_Inventory.clear();
+
+	m_Weapon = nullptr;
+	m_Armor = nullptr;
+
+	delete[] m_Name;
+	m_Name = nullptr;
+
+	m_bAlive = true;
+
+	m_Health = 3;
+	m_Defense = 0;
+	m_Strength = 2;
+	m_Money = 30;
 }
 
 void Player::OnUpdate()
@@ -113,7 +131,6 @@ void Player::UseItem(const char* name)
 			HandleStatusEffect(effect);
 
 			PopItem(item);
-			delete item;
 		}
 	}
 
@@ -174,7 +191,7 @@ void Player::HandleStatusEffect(const StatusEffect& effect)
 		case StatusAction::Health:
 			m_Health += *(effect.Effects + i);
 			if (m_Health < 0)
-				m_bAlive = true;
+				m_bAlive = false;
 			break;
 		case StatusAction::Strength:
 			m_Strength += *(effect.Effects + i);

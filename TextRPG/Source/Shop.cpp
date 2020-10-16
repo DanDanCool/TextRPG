@@ -6,6 +6,8 @@
 
 #include "Random.h"
 
+#include <vector>
+
 static constexpr int HEALTH_ITEMS1[] = {
 	0, //HBandage
 	1, //HFish
@@ -148,19 +150,13 @@ Shop CreateShop1()
 {
 	Shop shop;
 
-	int costs[4];
-
 	for (int i = 0; i < 4; i++)
-		costs[i] = 40 - Random::UInt32(0, 20);
+		shop.Costs[i] = 40 - Random::UInt32(0, 20);
 
-	Item* items[3];
+	shop.HealthItem = CreateItem(HEALTH_ITEMS1[Random::UInt32(0, 2)]);
+	shop.WeaponItem = CreateItem(WEAPON_ITEMS1[Random::UInt32(0, 3)]);
+	shop.ArmorItem = CreateItem(DEFENSE_ITEMS[0]);
 
-	items[0] = CreateItem(HEALTH_ITEMS1[Random::UInt32(0, 2)]);
-	items[1] = CreateItem(WEAPON_ITEMS1[Random::UInt32(0, 3)]);
-	items[2] = CreateItem(DEFENSE_ITEMS[0]);
-
-	shop.Items = items;
-	shop.Costs = costs;
 	shop.ScoreItemName = SKILL_ITEMS1[Random::UInt32(0, 3)];
 
 	return shop;
@@ -170,19 +166,13 @@ Shop CreateShop2()
 {
 	Shop shop;
 
-	int costs[4];
-
 	for (int i = 0; i < 4; i++)
-		costs[i] = 80 - Random::UInt32(0, 30);
+		shop.Costs[i] = 80 - Random::UInt32(0, 30);
 
-	Item* items[3];
+	shop.HealthItem = CreateItem(HEALTH_ITEMS2[Random::UInt32(0, 2)]);
+	shop.WeaponItem = CreateItem(WEAPON_ITEMS2[Random::UInt32(0, 3)]);
+	shop.ArmorItem = CreateItem(DEFENSE_ITEMS[1]);
 
-	items[0] = CreateItem(HEALTH_ITEMS2[Random::UInt32(0, 2)]);
-	items[1] = CreateItem(WEAPON_ITEMS2[Random::UInt32(0, 3)]);
-	items[2] = CreateItem(DEFENSE_ITEMS[1]);
-
-	shop.Items = items;
-	shop.Costs = costs;
 	shop.ScoreItemName = SKILL_ITEMS2[Random::UInt32(0, 3)];
 
 	return shop;
@@ -192,19 +182,13 @@ Shop CreateShop3()
 {
 	Shop shop;
 
-	int costs[4];
-
 	for (int i = 0; i < 4; i++)
-		costs[i] = 120 - Random::UInt32(0, 40);
+		shop.Costs[i] = 120 - Random::UInt32(0, 40);
 
-	Item* items[3];
+	shop.HealthItem = CreateItem(HEALTH_ITEMS3[Random::UInt32(0, 2)]);
+	shop.WeaponItem = CreateItem(WEAPON_ITEMS3[Random::UInt32(0, 3)]);
+	shop.ArmorItem = CreateItem(DEFENSE_ITEMS[2]);
 
-	items[0] = CreateItem(HEALTH_ITEMS3[Random::UInt32(0, 2)]);
-	items[1] = CreateItem(WEAPON_ITEMS3[Random::UInt32(0, 3)]);
-	items[2] = CreateItem(DEFENSE_ITEMS[2]);
-
-	shop.Items = items;
-	shop.Costs = costs;
 	shop.ScoreItemName = SKILL_ITEMS2[Random::UInt32(0, 3)];
 
 	return shop;
@@ -214,19 +198,13 @@ Shop CreateShop4()
 {
 	Shop shop;
 
-	int costs[4];
-
 	for (int i = 0; i < 4; i++)
-		costs[i] = 500 - Random::UInt32(0, 100);
+		shop.Costs[i] = 500 - Random::UInt32(0, 100);
 
-	Item* items[3];
+	shop.HealthItem = CreateItem(HEALTH_ITEMS4[Random::UInt32(0, 2)]);
+	shop.WeaponItem = CreateItem(WEAPON_ITEMS4[Random::UInt32(0, 3)]);
+	shop.ArmorItem = CreateItem(DEFENSE_ITEMS[3]);
 
-	items[0] = CreateItem(HEALTH_ITEMS4[Random::UInt32(0, 2)]);
-	items[1] = CreateItem(WEAPON_ITEMS4[Random::UInt32(0, 3)]);
-	items[2] = CreateItem(DEFENSE_ITEMS[3]);
-
-	shop.Items = items;
-	shop.Costs = costs;
 	shop.ScoreItemName = SKILL_ITEMS4[Random::UInt32(0, 3)];
 
 	return shop;

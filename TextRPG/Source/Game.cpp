@@ -13,7 +13,6 @@ static constexpr const char* ONOMATOPEIA[] = {
 	"Oof!", "Ouch!", "Pew!", "Kablam!", "Pow!", "Eek!", "Eep!", "Blam!", "Ugh!", "Ah!", "Argh!", "Ough!"
 };
 
-
 static void Suspense(uint32_t count, bool lineBreak = false)
 {
 	for (uint32_t i = 0; i < count; i++)
@@ -24,6 +23,8 @@ static void Suspense(uint32_t count, bool lineBreak = false)
 		if (lineBreak)
 			printf("\n");
 	}
+
+	printf("\n");
 }
 
 static void SoundEffect(uint32_t count)
@@ -39,6 +40,8 @@ static void SoundEffect(uint32_t count)
 
 Game::Game()
 {
+	Random::Init();
+
 	printf("=================================\n");
 	printf("           R P G   1 . 5         \n");
 	printf("       B Y   M A X   L I U       \n");
@@ -64,7 +67,7 @@ void Game::Run()
 		printf("Type xD to quit\n");
 
 		char quitt[3];
-		scanf_s("%2s", quitt, (uint32_t)sizeof(quitt) - 1);
+		fgets(quitt, 3, stdin);
 
 		if (!strcmp(quitt, "xD"))
 			return;
@@ -75,8 +78,8 @@ void Game::Start()
 {
 	printf("\nWhat is your name?\n");
 	
-	char name[256];
-	scanf_s("%255s", name, (uint32_t)sizeof(name) - 1);
+	char* name = new char[256];
+	scanf_s("%[^\n]255s", name, 255);
 
 	m_Player.SetName(name);
 
@@ -84,6 +87,7 @@ void Game::Start()
 	{
 		printf("Are you ready? (y/n) ");
 
+		getchar();
 		char ready;
 		scanf_s("%c", &ready, 1);
 
@@ -95,7 +99,7 @@ void Game::Start()
 		case 'n':
 			printf("Okay, I'll ask again in 10 seconds.\n");
 			std::this_thread::sleep_for(std::chrono::seconds(10));
-			break;
+			continue;
 		default:
 			printf("Poor input.\n");
 			continue;
@@ -115,7 +119,7 @@ void Game::End()
 	printf("============================\n");
 	printf("\n");
 
-	printf("Your final score was %d!", m_Score);
+	printf("Your final score was %d!\n", m_Score);
 
 	Suspense(3, true);
 
@@ -123,8 +127,10 @@ void Game::End()
 	{
 		printf("Would you like to play again? (y/n) ");
 	
+		getchar();
 		char restart;
 		scanf_s("%c", &restart, 1);
+		getchar();
 
 		switch (restart)
 		{
@@ -134,7 +140,7 @@ void Game::End()
 		case 'n':
 			break;
 		default:
-			printf("Poor input.");
+			printf("Poor input.\n");
 			continue;
 		}
 
@@ -181,6 +187,8 @@ void Game::Reset()
 
 	Suspense(5, true);
 
+	m_Player.Reset();
+
 	m_bRun = true;
 	m_PlayerX = 0;
 	m_PlayerY = 0;
@@ -191,6 +199,7 @@ void Game::Reset()
 
 void Game::PrintPlayerVitals()
 {
+	printf("\n");
 	printf("Location : %d, %d\n", m_PlayerX, m_PlayerY);
 	printf("Health   : %d\n", m_Player.GetHealth());
 	printf("Score    : %d\n", m_Score);
@@ -213,6 +222,7 @@ void Game::PlayerInventory()
 	{
 		printf("\t1. Use item\n\t2. Discard Item\n\t0. Return\n");
 
+		getchar();
 		char selection;
 		scanf_s("%c", &selection, 1);
 
@@ -220,16 +230,18 @@ void Game::PlayerInventory()
 		{
 		case '1':
 		{
+			getchar();
 			char itemName[128];
-			scanf_s("%127s", itemName, (uint32_t)sizeof(itemName) - 1);
+			scanf_s("%[^\n]127s", itemName, 127);
 
 			m_Player.UseItem(itemName);
 			break;
 		}
 		case '2':
 		{
+			getchar();
 			char itemName[128];
-			scanf_s("%127s", itemName, (uint32_t)sizeof(itemName) - 1);
+			scanf_s("%[^\n]127s", itemName, 127);
 
 			m_Player.PopItem(itemName);
 			break;
@@ -248,8 +260,9 @@ void Game::PlayerInventory()
 
 bool Game::OnMovement()
 {
-	printf("Which way would you like to go? (n/s/e/w)");
+	printf("Which way would you like to go? (n/s/e/w)\n");
 
+	getchar();
 	char direction;
 	scanf_s("%c", &direction, 1);
 
@@ -280,6 +293,8 @@ bool Game::OnMovement()
 		while (true)
 		{
 			printf("This command will kill your player.\nAre you sure? (y/n) ");
+
+			getchar();
 			char sure;
 			scanf_s("%c", &sure, 1);
 
@@ -289,6 +304,17 @@ bool Game::OnMovement()
 				break;
 
 			case 'y':
+			{
+				StatusAction action = StatusAction::Health;
+				int effect = -99999999;
+
+				StatusEffect statusEffect;
+				statusEffect.Size = 1;
+				statusEffect.Actions = &action;
+				statusEffect.Effects = &effect;
+
+				m_Player.HandleStatusEffect(statusEffect);
+
 				printf("\n");
 				printf("---------------------------------\n");
 				printf("You decide to ascend to heaven...\n");
@@ -296,6 +322,7 @@ bool Game::OnMovement()
 
 				Suspense(3);
 				break;
+			}
 
 			default:
 				printf("Poor input.\n");
@@ -371,13 +398,6 @@ void Game::OnPlayerDebt()
 
 void Game::OnShopEncounter()
 {
-	Shop shop = CreateShop(m_Step);
-
-	const char* prefix = "";
-
-	if (m_Step < 160)
-		prefix = "a ";
-
 	printf("\n");
 	printf("============================\n");
 	printf("      T H E   S H O P       \n");
@@ -386,41 +406,61 @@ void Game::OnShopEncounter()
 	printf("----------------------------\n");
 
 	printf("You come across a shop with three items.\n\n");
-	
+
+	const char* prefix = "";
+
+	if (m_Step < 160)
+		prefix = "the ";
+
+	Shop shop = CreateShop(m_Step);
+
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
-	printf("The first item is %s%s, and costs %d money\n", prefix, (*(shop.Items))->GetName(), *(shop.Costs));
+	printf("The first item is %s%s, and costs %d money\n", prefix, shop.HealthItem->GetName(), shop.Costs[0]);
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
-	printf("The second item is %s%s, and costs %d money\n", prefix, (*(shop.Items + 1))->GetName(), *(shop.Costs + 1));
+	printf("The second item is %s%s, and costs %d money\n", prefix, shop.WeaponItem->GetName(), shop.Costs[1]);
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
-	printf("The third item is %s%s, and costs %d money\n", prefix, (*(shop.Items + 2))->GetName(), *(shop.Costs + 2));
+	printf("The third item is %s%s, and costs %d money\n", prefix, shop.ArmorItem->GetName(), shop.Costs[2]);
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
-	printf("The fourth item is the %s, and costs %d money\n", shop.ScoreItemName, *(shop.Costs + 3));
+	printf("The fourth item is the %s, and costs %d money\n", shop.ScoreItemName, shop.Costs[3]);
+
+	StatusAction action = StatusAction::Money;
+	int effect = 0;
+
+	StatusEffect statusEffect;
+	statusEffect.Size = 1;
+	statusEffect.Actions = &action;
+	statusEffect.Effects = &effect;
 
 	while (true)
 	{
 		printf("\nPress '1', '2', or '3' to select an item. Press '0' to purchase none of them.\n");
 
+		getchar();
 		char selection;
 		scanf_s("%c", &selection, 1);
 
 		switch (selection)
 		{
 		case '1':
-			printf("You purchased %s%s for %d money\n", prefix, (*(shop.Items))->GetName(), *(shop.Costs));
-			m_Player.AddItem(*(shop.Items));
+			printf("You purchased %s%s for %d money\n", prefix, shop.HealthItem->GetName(), shop.Costs[0]);
+			m_Player.AddItem(shop.HealthItem);
+			effect = -shop.Costs[0];
 			break;
 		case '2':
-			printf("You purchased %s%s for %d money\n", prefix, (*(shop.Items + 1))->GetName(), *(shop.Costs + 1));
-			m_Player.AddItem(*(shop.Items + 2));
+			printf("You purchased %s%s for %d money\n", prefix, shop.WeaponItem->GetName(), shop.Costs[1]);
+			m_Player.AddItem(shop.WeaponItem);
+			effect = -shop.Costs[1];
 			break;
 		case '3':
-			printf("You purchased %s%s for %d money\n", prefix, (*(shop.Items + 2))->GetName(), *(shop.Costs + 2));
-			m_Player.AddItem(*(shop.Items + 2));
+			printf("You purchased %s%s for %d money\n", prefix, shop.ArmorItem->GetName(), shop.Costs[2]);
+			m_Player.AddItem(shop.ArmorItem);
+			effect = -shop.Costs[2];
 			break;
 		case '4':
-			printf("You purchased the %s for %d money\n", shop.ScoreItemName, *(shop.Costs + 3));
+			printf("You purchased the %s for %d money\n", shop.ScoreItemName, shop.Costs[3]);
 			printf("You gained some score!\n");
 			m_Score += m_Step / 2 + Random::UInt32(0, 20);
+			effect = -shop.Costs[3];
 			break;
 		case '0':
 			printf("You don't purchase anything.\n");
@@ -432,6 +472,8 @@ void Game::OnShopEncounter()
 
 		break;
 	}
+
+	m_Player.HandleStatusEffect(statusEffect);
 }
 
 void Game::OnRandomEncounter()
@@ -526,6 +568,7 @@ void Game::OnEnemyEncounter()
 		m_Player.HandleStatusEffect(statusEffect);
 	}
 
+	DestroyEnemy(enemy);
 	printf("--------------------------\n");
 }
 
@@ -534,17 +577,18 @@ void Game::OnWizardEncounter()
 	printf("--------------------------\n");
 
 	int rng = Random::UInt32(0, 21);
+	const char* name = Util::GetRandomName(6, true);
 
 	StatusEffect statusEffect;
 	statusEffect.Size = 1;
 
 	if (rng < 10)
 	{
-		printf("A dark wizard named %s curses you!\n", Util::GetRandomName(6, true));
+		printf("A dark wizard named %s curses you!\n", name);
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 		printf("ZAP!\n");
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
-		printf("You take 2 damage.");
+		printf("You take 2 damage.\n");
 
 		StatusAction actions = StatusAction::Health;
 		int effects = -2;
@@ -554,11 +598,11 @@ void Game::OnWizardEncounter()
 	}
 	else if (rng < 20)
 	{
-		printf("A holy wizard named %s blesses you!\n", Util::GetRandomName(6, true));
+		printf("A holy wizard named %s blesses you!\n", name);
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 		printf("ZAP!\n");
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
-		printf("You gain 2 health.");
+		printf("You gain 2 health.\n");
 
 		StatusAction actions = StatusAction::Health;
 		int effects = 2;
@@ -568,11 +612,11 @@ void Game::OnWizardEncounter()
 	}
 	else if (rng == 20)
 	{
-		printf("A shiny dark wizard named %s curses you!\n", Util::GetRandomName(6, true));
+		printf("A shiny dark wizard named %s curses you!\n", name);
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 		printf("ZAP!\n");
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
-		printf("You 5 damage.");
+		printf("You 5 damage.\n");
 
 		StatusAction actions = StatusAction::Health;
 		int effects = -5;
@@ -582,11 +626,11 @@ void Game::OnWizardEncounter()
 	}
 	else
 	{
-		printf("A shiny holy wizard named %s blesses you!\n", Util::GetRandomName(6, true));
+		printf("A shiny holy wizard named %s blesses you!\n", name);
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 		printf("ZAP!\n");
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
-		printf("You gain 5 health.");
+		printf("You gain 5 health.\n");
 
 		StatusAction actions = StatusAction::Health;
 		int effects = 5;
@@ -595,6 +639,7 @@ void Game::OnWizardEncounter()
 		statusEffect.Effects = &effects;
 	}
 
+	delete[] name;
 	m_Player.HandleStatusEffect(statusEffect);
 }
 
@@ -671,7 +716,7 @@ void Game::OnCrateEncounter()
 
 		else
 		{
-			printf("ANd lose");
+			printf("ANd lose\n");
 		}
 	}
 
@@ -694,8 +739,8 @@ void Game::OnMiscEncounter()
 		statusEffect.Size = 1;
 		statusEffect.Actions = &action;
 
-		printf("--------------------------");
-		printf("You fell");
+		printf("--------------------------\n");
+		printf("You fell\n");
 		Suspense(3);
 
 		if (Random::UInt32(0, 2) == 0)
@@ -710,14 +755,14 @@ void Game::OnMiscEncounter()
 			effect = -1;
 
 			printf("onto the ground.\n");
-			printf(" You take one damage.\n");
+			printf("You take one damage.\n");
 		}
 		else
 		{
 			effect = 3;
 
 			printf("onto a blanket of beautiful flowers!\n");
-			printf(" You gain three health.\n");
+			printf("You gain three health.\n");
 		}
 
 		statusEffect.Effects = &effect;
@@ -735,8 +780,8 @@ void Game::OnMiscEncounter()
 		statusEffect.Size = 1;
 		statusEffect.Actions = &action;
 
-		printf("--------------------------");
-		printf("You picked up an orb");
+		printf("--------------------------\n");
+		printf("You picked up an orb\n");
 		Suspense(3);
 
 		if (Random::UInt32(0, 1) == 0)

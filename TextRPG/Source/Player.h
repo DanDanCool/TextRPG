@@ -11,6 +11,8 @@ public:
 	Player();
 	~Player();
 
+	void Reset();
+
 	void OnUpdate();
 
 	const char* GetName() const { return m_Name; }
@@ -52,8 +54,8 @@ private:
 
 	bool m_bAlive = true;
 
-	int m_Health = 3;
+	int m_Health = 10;
 	int m_Defense = 0;
-	int m_Strength = 2;
+	int m_Strength = 5;
 	int m_Money = 30;
 };

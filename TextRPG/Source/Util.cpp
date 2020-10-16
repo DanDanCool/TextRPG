@@ -1,7 +1,6 @@
 #include "Util.h"
 
 #include "Random.h"
-#include <string>
 
 const char UPPER_ALPHABET[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const char LOWER_ALPHABET[] = "abcdefghijklmnopqrstuvwxyz";
@@ -20,18 +19,23 @@ namespace Util
 
 	const char* GetRandomName(uint32_t length, bool addApostrophe)
 	{
-		std::string str;
-		str += UPPER_ALPHABET[Random::UInt32(0, 25)];
+		if (addApostrophe)
+			length++;
 
-		for (uint32_t i = 0; i < length - 1; i++)
+		char* str = new char[length + 1];
+		str[0] = UPPER_ALPHABET[Random::UInt32(0, 25)];
+
+		for (uint32_t i = 1; i < length; i++)
 		{
-			str += LOWER_ALPHABET[Random::UInt32(0, 25)];
+			str[i] = LOWER_ALPHABET[Random::UInt32(0, 25)];
 
 			if (addApostrophe && i == length / 2)
-				str += '\'';
+				str[++i] = '\'';
 		}
 
-		return str.c_str();
+		str[length] = '\0';
+
+		return str;
 	}
 
 	const char* GetRandomName(uint32_t length, bool addApostrophe, const char* name)
